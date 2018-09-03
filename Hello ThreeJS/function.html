@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+//    alert("sdsjdkhk");
+    function test (params){
+        this.params = params;
+        alert("testfangfa");
+    }
+
+    test.prototype.init = function(){
+        alert("我是函数新方法");
+    }
+
+    Function; //Function的原型为   =>function Function() { [native code] }
+    Function.prototype.show = function()
+    {
+        return "我是一个函数的新方法";    //函数需要有返回值!
+    }
+    Function.show();  //输出=>我是一个函数的新方法
+
+    var f = new Function();
+    f.show();    //输出=>我是一个函数的新方法
+
+    window.onload = function(){
+//        var f = new test();
+//        f.init();    //输出=>我是一个函数的新方法
+        f.show();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script type="text/javascript" src="three.js"></script>-->
+    <script src="../three.js-master/build/three.js"></script>
+    <script src="../three.js-master/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body onload="init();">
+<!--<canvas id="canvasId" width="800" height="600"></canvas>-->
+<script>
+    //body onload事件
+    function init() {
+//        render();
+//        draw();
+//      渲染器
+        var renderer = new THREE.WebGLRenderer();
+        // canvas元素设置宽高
+        renderer.setSize = (800, 600);
+        // 渲染器对应的Canvas元素添加到<body>中。
+        document.body.appendChild(renderer.domElement);
+        // 清除画面的颜色
+        renderer.setClearColor(0x000000);
+
+        // 场景
+        var scene = new THREE.Scene();
+
+        // 相机
+        // 定义一个透视相机
+        var camera = new THREE.PerspectiveCamera(45, 4 / 3, 1, 1000);
+        // 设定相机的位置
+        camera.position.set(0, 0, 5);
+        // 将相机添加到场景中
+        scene.add(camera);
+
+        // 物体
+        var cube = new THREE.Mesh(new THREE.CubeGeometry(1, 2, 3), new THREE.MeshBasicMaterial({
+            color: 0xff0000
+        }));
+        scene.add(cube);
+
+        // 渲染
+        renderer.render(scene, camera);
+    }
+    //全局变量
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+    /*var controls = new THREE.OrbitControls(camera);//创建控件对象 camera是你的相机对象
+     controls.addEventListener('change', render);//监听鼠标、键盘事件*/
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    //接下来我们添加“演员”（3D立方体）。
+    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    var cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
+
+    camera.position.z = 5;
+
+    function render() {
+        requestAnimationFrame( render );
+        cube.rotation.x += 0.1;
+        cube.rotation.y += 0.1;
+        renderer.render( scene, camera );
+    }
+
+
+
+    //准备工作
+    function initDraw(){
+        // 渲染器
+        var renderer = new THREE.WebGLRenderer();
+        // canvas元素设置宽高
+        renderer.setSize = (800, 600);
+        // 渲染器对应的Canvas元素添加到<body>中。
+        document.body.appendChild(renderer.domElement);
+        // 清除画面的颜色
+        renderer.setClearColor(0x000000);
+
+        // 场景
+        var scene = new THREE.Scene();
+
+        // 相机
+        // 定义一个透视相机
+        var camera = new THREE.PerspectiveCamera(45, 4 / 3, 1, 1000);
+        // 设定相机的位置
+        camera.position.set(0, 0, 5);
+        // 将相机添加到场景中
+        scene.add(camera);
+
+    }
+
+    //绘制矩形
+    function draw(){
+        // 渲染器
+        var renderer = new THREE.WebGLRenderer();
+        // canvas元素设置宽高
+        renderer.setSize = (800, 600);
+        // 渲染器对应的Canvas元素添加到<body>中。
+        document.body.appendChild(renderer.domElement);
+        // 清除画面的颜色
+        renderer.setClearColor(0x000000);
+
+        // 场景
+        var scene = new THREE.Scene();
+
+        // 相机
+        // 定义一个透视相机
+        var camera = new THREE.PerspectiveCamera(45, 4 / 3, 1, 1000);
+        // 设定相机的位置
+        camera.position.set(0, 0, 5);
+        // 将相机添加到场景中
+        scene.add(camera);
+
+        // 物体
+        var cube = new THREE.Mesh(new THREE.CubeGeometry(1, 2, 3), new THREE.MeshBasicMaterial({
+            color: 0xff0000
+        }));
+        scene.add(cube);
+
+        // 渲染
+        renderer.render(scene, camera);
+    }
+
+
+
+    // 封装一个坐标系函数
+    function drawAxes(scene) {
+        // x-axis
+        var xGeo = new THREE.Geometry();
+        xGeo.vertices.push(new THREE.Vector3(0, 0, 0));
+        xGeo.vertices.push(new THREE.Vector3(3, 0, 0));
+        var xMat = new THREE.LineBasicMaterial({
+            color: 0xff0000
+        });
+        var xAxis = new THREE.Line(xGeo, xMat);
+        scene.add(xAxis);
+
+        // y-axis
+        var yGeo = new THREE.Geometry();
+        yGeo.vertices.push(new THREE.Vector3(0, 0, 0));
+        yGeo.vertices.push(new THREE.Vector3(0, 3, 0));
+        var yMat = new THREE.LineBasicMaterial({
+            color: 0x00ff00
+        });
+        var yAxis = new THREE.Line(yGeo, yMat);
+        scene.add(yAxis);
+
+        // z-axis
+        var zGeo = new THREE.Geometry();
+        zGeo.vertices.push(new THREE.Vector3(0, 0, 0));
+        zGeo.vertices.push(new THREE.Vector3(0, 0, 3));
+        var zMat = new THREE.LineBasicMaterial({
+            color: 0x00ccff
+        });
+        var zAxis = new THREE.Line(zGeo, zMat);
+        scene.add(zAxis);
+
+    }
+
+    //绘制棋盘
+    function drawCheckerboard(){
+        // 渲染器
+        var renderer = new THREE.WebGLRenderer();
+        // 设定渲染器尺寸
+        renderer.setSize(800, 600);
+        // 添加到dom
+        document.body.appendChild(renderer.domElement);
+        // 重绘时颜色
+        renderer.setClearColor(0x000000);
+
+        // 场景
+        var scene = new THREE.Scene();
+
+        // 相机
+        var camera = new THREE.OrthographicCamera(-5, 5, 3.75, -3.75, 0.1, 100);
+        // 设定相机位置
+        camera.position.set(0, -25, 0);
+        // 相机看向
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        scene.add(camera);
+
+        // 定义一个几何体
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(new THREE.Vector3(-2, 0, 0));
+        geometry.vertices.push(new THREE.Vector3(2, 0, 0));
+        // for循环出来六条线段
+        for (var i = 0; i <= 5; i++) {
+            // 定义竖着的线段
+            var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+                color: 0xffffff,
+            }));
+            // 每条线段之间的间隔为0.8，-2是为了达到田字格的效果
+            line.position.z = (i * 0.8) - 2;
+            scene.add(line);
+
+            // 定义横着的线段
+            var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+                color: 0xffffff,
+                opacity: 0.2
+            }));
+            line.position.x = (i * 0.8) - 2;
+            line.rotation.y = 90 * Math.PI / 180;
+            scene.add(line);
+
+            // 渲染
+            renderer.render(scene, camera);
+
+        }
+    }
+
+</script>
+</body>
+</html>
