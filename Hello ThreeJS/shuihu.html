@@ -85,7 +85,7 @@
         var renderer = null;
         var mesh = null;
         var id = null;
-
+        var controls = null;//控制器
         var raycaster = null;
         var mouse = new THREE.Vector2(), INTERSECTED;
 
@@ -291,7 +291,8 @@
             directionalLight.position.set( 100, 0, 0 );
             scene.add(directionalLight);
             ////监听鼠标、键盘事件，旋转图形
-            var controls = new THREE.OrbitControls(camera);
+            controls = new THREE.OrbitControls(camera);
+//            var controls = new THREE.OrbitControls(camera);
 //            controls.addEventListener('change', renderer);//这个控制台会报错，不过不影响使用
 
             //捕获模型
@@ -372,6 +373,10 @@
                 INTERSECTED = null;
             }*/
 
+
+            // required if controls.enableDamping or controls.autoRotate are set to true
+            controls.update();
+
             renderer.render(scene, camera);//调用WebGLRenderer的render函数刷新场景
 
 
@@ -394,7 +399,7 @@
             console.log(intersects);
 
             //将所有的相交的模型的颜色设置为红色，如果只需要将第一个触发事件，那就数组的第一个模型改变颜色即可
-            for ( var i = 0; i < intersects.length; i++ ) {
+                for ( var i = 0; i < intersects.length; i++ ) {
 
                 intersects[ i ].object.material.color.set( 0xff0000 );
 
