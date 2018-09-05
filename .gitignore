@@ -24,7 +24,9 @@ $RECYCLE.BIN/
 
 ##ignore this file##
 /target/ 
+/.idea/
 
+.idea
 .classpath
 .project
 .settings      
