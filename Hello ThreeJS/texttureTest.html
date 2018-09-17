@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body {
+            font-family: Monospace;
+            background-color: #000;
+            color: #fff;
+            margin: 0px;
+            overflow: hidden;
+        }
+        #info {
+            color: #fff;
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            display:block;
+        }
+        #info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+    </style>
+</head>
+<body>
+<!--<script type="text/javascript" src="../learning-threejs-master/libs/three.js"></script>
+<script type="text/javascript" src="../learning-threejs-master/libs/OBJLoader.js"></script>
+<script type="text/javascript" src="../learning-threejs-master/libs/MTLLoader.js"></script>
+<script type="text/javascript" src="../learning-threejs-master/libs/OBJMTLLoader.js"></script>-->
+
+
+<script src="../three.js-master/build/three.js"></script>
+<script src="../three.js-master/examples/js/loaders/OBJLoader.js"></script>
+<script src="../three.js-master/examples/js/loaders/MTLLoader.js"></script>
+
+<script src="../three.js-master/examples/js/controls/TrackballControls.js"></script>
+<script src="../three.js-master/examples/js/controls/OrbitControls.js"></script>
+
+
+<div id="glFullscreen">
+    <!--<canvas id="mainCanvas" width="1920" height="948"></canvas>-->
+    <!--<canvas id="mainCanvas" width="1800" height="900"></canvas>-->
+    <canvas id="example"></canvas>
+</div>
+
+<script type="text/javascript">
+    var container;
+    var camera, scene, renderer;
+
+    var  meshObj;
+    init();
+
+    function init() {
+        renderer = new THREE.WebGLRenderer({//渲染器
+            canvas: document.getElementById('example')//画布
+            , alpha: true//设置场景透明
+        });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        scene = new THREE.Scene();//创建场景
+
+        //            网格宽度、等分数、中心线颜色，网格线颜色
+        var helper = new THREE.GridHelper(1200, 60, 0xFF4444, 0x404040);
+        scene.add(helper);
+
+        camera = new THREE.PerspectiveCamera( 45, 1, 0.1, 10000 );//透视摄影机
+        camera.position.set(1300.0, 600.0, 1200.0);//相机位置
+
+//            camera.position.set(-0.0, 0.0, 0.0);//相机位置
+//            camera.lookAt(new THREE.Vector3(0, 2, 0));//lookAt()设置相机所看的位置
+//            camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
+//            camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
+        camera.lookAt(scene.position);//lookAt()设置相机所看的位置
+
+        scene.add(camera);//把相机添加到场景中
+
+        //环境光
+        var ambientLight = new THREE.AmbientLight( 0x404040 );
+        //方向光
+        var directionalLight1 = new THREE.DirectionalLight( 0xC0C090 );
+        var directionalLight2 = new THREE.DirectionalLight( 0xC0C090 );
+//            var ambientLight = new THREE.AmbientLight( 'white' );
+//            var directionalLight1 = new THREE.DirectionalLight( 'white' );
+//            var directionalLight2 = new THREE.DirectionalLight( 'white' );
+        directionalLight1.position.set( -100, -50, 100 );
+        directionalLight2.position.set( 100, 50, -100 );
+        scene.add(directionalLight1);
+        scene.add(directionalLight2);
+        scene.add(ambientLight);
+
+////监听鼠标、键盘事件，旋转图形
+        var controls = new THREE.OrbitControls(camera);
+
+
+        var material = new THREE.MeshPhongMaterial({
+//            color: 'green',
+            wireframe:false,
+            map: new THREE.TextureLoader().load('images/xian1.jpg'),
+        })
+        box = new THREE.Mesh(new THREE.BoxBufferGeometry(100,100,100,10,10,10),material);
+        scene.add(box);
+
+        /***
+         * 加载obj
+         * @type {THREE.OBJLoader}
+         */
+        var  texture = new THREE.TextureLoader().load('images/xian1.jpg');
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        var objLoader = new THREE.OBJLoader();
+//        objLoader.setMaterials(materials);
+        objLoader.setPath('obj/');
+//                objLoader.setPath('obj/');
+//                objLoader.load('OBJ-TEST.obj', function(object) {
+//                objLoader.load('car.obj', function(object) {
+        objLoader.load("ma.obj", function(object) {
+//                objLoader.load('Boeing-MD-11.obj', function(object) {
+
+            object.rotation.y = 0;
+
+            object.position.x = 0;
+            object.position.y = 0;
+            object.position.z = 0;
+//                    object.scale.set(0.05, 0.05, 0.05);
+            object.scale.set(0.5, 0.5, 0.5);//缩放
+            object.scale.set(0.1, 0.1, 0.1);//缩放
+
+            object.name = 'ma_obj';
+//                    object.scale.multiplyScalar(1);
+            object.traverse( function ( child ) {
+                if ( child instanceof THREE.Mesh ) {
+                    //给name为A开头的模型贴图
+//                            if(child.name.indexOf("A")==0){
+//                                child.material.map = texture;
+                    //每个储位单独赋予一个基础材质
+                            child.material = new THREE.MeshPhongMaterial({
+//                                color: 0xff0000 ,
+                                map: texture,
+                            });//(红色)
+//                            child.material.map = texture;
+//                            }
+                }
+            } );
+
+            meshObj = object;
+            //放入场景
+            scene.add(object);
+
+        }, onProgress, onError);
+        animate();
+    }
+    var onProgress = function(xhr) {
+        if (xhr.lengthComputable) {
+            var percentComplete = xhr.loaded / xhr.total * 100;
+            var percent = document.getElementById("percent");
+//                    percent.innerText = Math.round(percentComplete, 2) + '% 已经加载';
+        }
+    };
+    var onError = function(xhr) {};
+    function animate() {
+
+
+        requestAnimationFrame( animate );
+        render();
+
+
+
+    }
+    function render(){
+        var  texture = new THREE.TextureLoader().load('images/caodi.jpg');
+//        texture.wrapS = THREE.RepeatWrapping;
+//        texture.wrapT = THREE.RepeatWrapping;
+
+
+        /*meshObj.traverse( function ( child ) {
+            if ( child instanceof THREE.Mesh ) {
+                //给name为A开头的模型贴图
+//                            if(child.name.indexOf("A")==0){
+//                                child.material.map = texture;
+                //每个储位单独赋予一个基础材质
+                child.material = new THREE.MeshPhongMaterial({
+                    color: 0xff0000 ,
+//                    map: texture,
+                });//(红色)
+//                            child.material.map = texture;
+//                            }
+            }
+        } );*/
+
+        box.material = new THREE.MeshPhongMaterial({
+//            color: 0xff0000 ,
+//            map: new THREE.TextureLoader().load('images/caodi.jpg'),
+        });//(红色)
+
+//        meshObj.children[0].material.map = THREE.ImageUtils.loadTexture( 'images/caodi.jpg' );
+//        var  objectMesh = THREE.Scene.getObjectByName('ma_obj',true);
+        scene.traverse( function ( child ) {
+            if ( child instanceof THREE.Group ) {
+//                console.log("child.name  " +child.name);
+                /*//给name为A开头的模型贴图
+                if(child.name.indexOf("ma_obj")==0){
+//                    console.log("mamamam");
+                    child.traverse( function ( child ) {
+                        child.material = new THREE.MeshPhongMaterial({
+                            color: 0xff0000 ,
+                            map: texture,
+                        });//(红色)
+                        child.material.needsUpdate = true;
+                    });
+                    child.material.needsUpdate = true;
+                    /!*for(var i=0;i < child.children.length;i++){
+                        child.children[i].material = new THREE.MeshPhongMaterial({
+                            color: 0xff0000 ,
+                            map: texture,
+                        });
+                    }*!/
+                }*/
+
+            }
+        } );
+
+        /*meshObj.children[4].material = new THREE.MeshPhongMaterial({
+            color: 'red' ,
+                    map: texture,
+        });
+        meshObj.children[7].material = new THREE.MeshPhongMaterial({
+            color: 'red' ,
+                    map: texture,
+        });*/
+
+        renderer.render(scene, camera);//调用WebGLRenderer的render函数刷新场景
+    }
+</script>
+</body>
+</html>
