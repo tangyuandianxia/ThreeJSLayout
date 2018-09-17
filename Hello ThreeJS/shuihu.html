@@ -72,6 +72,7 @@
             z-Index: 200;
         }
     </style>
+    <!--<script src="../learning-threejs-master/libs/OBJMTLLoader.js"></script>-->
 
 </head>
 <!--<body onload="init()" >-->
@@ -122,7 +123,10 @@
             scene.add( helper );
 
             //在场景中添加坐标轴
-            var axes = new THREE.AxisHelper(2000);
+            /*var axes = new THREE.AxisHelper(2000);
+            scene.add(axes);*/
+
+            var axes = new THREE.AxesHelper(2000);
             scene.add(axes);
 
 
@@ -223,6 +227,7 @@
             loadOBJMTL("obj","ma.mtl","obj","ma.obj");
             loadOBJMTL("obj","ma.mtl","obj","ma.obj");
 
+
             /**
              * 生成文字
              * */
@@ -300,7 +305,7 @@
 
 
             var directionalLight = new THREE.DirectionalLight( "white" );
-            directionalLight.position.set( 100, 0, 0 );
+            directionalLight.position.set( 100, 50, 0 );
             scene.add(directionalLight);
             ////监听鼠标、键盘事件，旋转图形
             controls = new THREE.OrbitControls(camera);
@@ -344,22 +349,41 @@
                  mesh.children[i].material.color.set('brown');
                  }*/
 
-                mesh.traverse( function ( child ) {
+                var  textureMesh = new THREE.TextureLoader().load('img/xian1.jpg');
+
+                var bump = new THREE.TextureLoader().load("img/xian1.jpg");
+                /*mesh.traverse( function ( child ) {
                     if ( child instanceof THREE.Mesh ) {
                         //给name为A开头的模型贴图
 //                            if(child.name.indexOf("A")==0){
 //                                child.material.map = texture;
                         //每个储位单独赋予一个基础材质
-//                            child.material = new THREE.MeshBasicMaterial({color: 'green' });//(红色)
+                            child.material = new THREE.MeshPhongMaterial({
+//                                color: 'green',
+//                                map: textureMesh,
+//                                side:THREE.DoubleSide,//两面可见
+//                                emissive :'yellow',
+//                                skinning : true,
+//                                bumpMap  : bump,//凹凸贴图
+                            });//(红色)
+
+                        child.material.needsUpdate = true;
+//                            child.material = new THREE.MeshBasicMaterial({color: 'red' });//(红色)
 //                            child.material = new THREE.MeshDepthMaterial({color: 'red' });//(红色)
 //                            child.material = new THREE.MeshNormalMaterial({color: 'red' });//(红色)
-//                            child.material = new THREE.MeshLambertMaterial({color: 'red' });//(红色)
-                        child.material = new THREE.MeshPhongMaterial({color: 'green' });//(红色)
-//                            child.material.map = texture;
-//                            }
                     }
 //                    child.material = new THREE.MeshPhongMaterial({color: 'red' });//(红色)
-                } )
+                } );*/
+                //11 个子类
+
+//                var childArr = [0,1,2,3,4,5];
+                var childArr = [6,7];
+                for(var i = 0; i< childArr.length;i++){
+                    mesh.children[childArr[i]].material = new THREE.MeshPhongMaterial({
+                        color: 'red' ,
+//                    map: textureMesh,
+                    });
+                }
             } catch (e) {
             }
 
@@ -420,14 +444,34 @@
                     }
                     console.log("child Object "+ child);
                 }*/
-                var testarray = [9];
+
+
+
+//                var testarray = [1,2,3,4,5,6,7,8,9];
+                var testarray = [0,1,2,3,4,5,6,7,8,9];
                 for(var i=0; i< testarray.length;i++){
                     var child = intersectsObj.children[testarray[i]];
                     try {
-                        child.material = new THREE.MeshPhongMaterial({color: 'red'});
+                        /*child.material = new THREE.MeshPhongMaterial({
+//                            color: 'green',
+//                            emissive :'yellow',
+//                            map: new THREE.TextureLoader().load('img/xian1.jpg')
+//                            ,transparent: true,
+//                            depthTest: false
+                        });*/
+                        child.material.color.set( 'green' );
+                        child.material.needsUpdate = true;
                     } catch (e) {
                     }
                 }
+                /*intersectsObj.children[0].material = new THREE.MeshPhongMaterial({
+//                            color: 'green',
+//                            emissive :'yellow',
+//                            map: new THREE.TextureLoader().load('img/xian1.jpg'),
+//                            transparent: true,
+//                            depthTest: false,
+                });*/
+
                 /*intersectsObj.traverse( function ( child ) {
                     if ( child instanceof THREE.Mesh ) {
                         child.material = new THREE.MeshPhongMaterial({color: 'green' });
@@ -483,14 +527,20 @@
 //             copy.scale.set(0.5, 0.5, 0.5);//缩放
                 copy.scale.set(0.05, 0.05, 0.05);//缩放
 
-//                var texture = new  THREE.TextureLoader().load('img/MDCLayout.jpg');
-                var texture = new THREE.TextureLoader().load( 'img/MDCLayout.jpg' );
+                var texture = new  THREE.TextureLoader().load('img/xian1.jpg');
+//                var texture = new THREE.TextureLoader().load( 'img/MDCLayout.jpg' );
+                /*copy.children[0].material = new THREE.MeshPhongMaterial({
+//                    color: ''+color,
+                            map:texture,
+                });*/
                 for(var i=0;i<copy.children.length;i++){
                     /*copy.children[i].material = new THREE.MeshPhongMaterial({
                         color: ''+color,
-//                            map:texture,
+                            map:texture,
                     });//(红色)*/
+                    copy.children[0].material.color.set( 'black' );
                 }
+
                 /*copy.traverse( function ( child ) {
                     if ( child instanceof THREE.Mesh ) {
                         //给name为A开头的模型贴图
@@ -533,6 +583,17 @@
 //            mtlLoader.load('Boeing-MD-11.mtl', function(materials) {
 
                 materials.preload();//预加载
+
+                //20180914
+                //设置该值为true后，如果材质发生改变，就会使用新的材质刷新它的缓存
+//                materials.needsUpdate = true;
+                var mat = materials.materials;
+                for (var key in mat) {
+                    console.log(key)
+                    mat[key].transparent = true; // 类似如此修改材质属性即可
+                }
+                //20180914
+
 
                 var objLoader = new THREE.OBJLoader();
                 objLoader.setMaterials(materials);
@@ -700,11 +761,11 @@
              scene.add(ground);
         }
         //
-        function onDocumentMouseMove( event ) {
+        /*function onDocumentMouseMove( event ) {
             event.preventDefault();
             mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
             mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-        }
+        }*/
 
 
 //        requestAnimationFrame( render );
