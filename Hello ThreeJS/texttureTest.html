@@ -8,6 +8,7 @@
         body {
             font-family: Monospace;
             background-color: #000;
+            /*background-color: #fff;*/
             color: #fff;
             margin: 0px;
             overflow: hidden;
@@ -39,6 +40,13 @@
 <script src="../three.js-master/examples/js/controls/OrbitControls.js"></script>
 
 
+<script src="../three.js-master/examples/js/shaders/CopyShader.js"></script>
+<script src="../three.js-master/examples/js/shaders/FXAAShader.js"></script>
+<script src="../three.js-master/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="../three.js-master/examples/js/postprocessing/RenderPass.js"></script>
+<script src="../three.js-master/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="../three.js-master/examples/js/postprocessing/OutlinePass.js"></script>
+<script src="../three.js-master/examples/js/postprocessing/MaskPass.js"></script>
 <div id="glFullscreen">
     <!--<canvas id="mainCanvas" width="1920" height="948"></canvas>-->
     <!--<canvas id="mainCanvas" width="1800" height="900"></canvas>-->
@@ -49,7 +57,21 @@
     var container;
     var camera, scene, renderer;
 
-    var  meshObj;
+    var  meshObj = null;
+
+    //测试
+    var composer, effectFXAA, outlinePass;
+    var obj3d = new THREE.Object3D();
+
+    var group = new THREE.Group();
+
+    var raycaster = new THREE.Raycaster();
+
+    var mouse = new THREE.Vector2();
+    var selectedObjects = [];
+
+    var OBJFlag = true;
+
     init();
 
     function init() {
@@ -78,7 +100,8 @@
         scene.add(camera);//把相机添加到场景中
 
         //环境光
-        var ambientLight = new THREE.AmbientLight( 0x404040 );
+//        var ambientLight = new THREE.AmbientLight( 0x404040 );
+        var ambientLight = new THREE.AmbientLight( 'white' );
         //方向光
         var directionalLight1 = new THREE.DirectionalLight( 0xC0C090 );
         var directionalLight2 = new THREE.DirectionalLight( 0xC0C090 );
@@ -91,6 +114,7 @@
         scene.add(directionalLight2);
         scene.add(ambientLight);
 
+
 ////监听鼠标、键盘事件，旋转图形
         var controls = new THREE.OrbitControls(camera);
 
@@ -101,7 +125,7 @@
             map: new THREE.TextureLoader().load('images/xian1.jpg'),
         })
         box = new THREE.Mesh(new THREE.BoxBufferGeometry(100,100,100,10,10,10),material);
-        scene.add(box);
+//        scene.add(box);
 
         /***
          * 加载obj
@@ -111,47 +135,204 @@
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
 
-        var objLoader = new THREE.OBJLoader();
-//        objLoader.setMaterials(materials);
-        objLoader.setPath('obj/');
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('obj/skjc/');
+        mtlLoader.load('shukongjichuang.mtl', function (materials) {
+            materials.preload();//预加载
+
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.setPath('obj/skjc/');
 //                objLoader.setPath('obj/');
 //                objLoader.load('OBJ-TEST.obj', function(object) {
 //                objLoader.load('car.obj', function(object) {
-        objLoader.load("ma.obj", function(object) {
-//                objLoader.load('Boeing-MD-11.obj', function(object) {
+            objLoader.load("shukongjichuang.obj", function (object) {
+                        object.rotation.y = 0;
+                        object.position.x = 0;
+                        object.position.y = 100;
+                        object.position.z = 0;
+//            object.scale.set(0.1, 0.1, 0.1);//缩放
 
-            object.rotation.y = 0;
-
-            object.position.x = 0;
-            object.position.y = 0;
-            object.position.z = 0;
-//                    object.scale.set(0.05, 0.05, 0.05);
-            object.scale.set(0.5, 0.5, 0.5);//缩放
-            object.scale.set(0.1, 0.1, 0.1);//缩放
-
-            object.name = 'ma_obj';
+                        object.name = 'shukongjichuang';
 //                    object.scale.multiplyScalar(1);
-            object.traverse( function ( child ) {
-                if ( child instanceof THREE.Mesh ) {
-                    //给name为A开头的模型贴图
+                        meshObj = object;
+                        obj3d.add(object);
+                        group.add(object);
+                        //放入场景
+                        scene.add(object);
+
+                    },
+                    onProgress, onError);
+        });
+
+        mtlLoader.load('shukongjichuang2.mtl', function (materials) {
+            materials.preload();//预加载
+
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.setPath('obj/skjc/');
+            objLoader.load("shukongjichuang2.obj", function (object) {
+                        object.rotation.y = 0;
+                        object.position.x = 300;
+                        object.position.y = 100;
+                        object.position.z = 200;
+//            object.scale.set(0.1, 0.1, 0.1);//缩放
+
+                        object.name = 'shukongjichuang2';
+//                    object.scale.multiplyScalar(1);
+                        /*object.traverse( function ( child ) {
+                            if ( child instanceof THREE.Mesh ) {
+                                //给name为A开头的模型贴图
 //                            if(child.name.indexOf("A")==0){
 //                                child.material.map = texture;
-                    //每个储位单独赋予一个基础材质
-                            child.material = new THREE.MeshPhongMaterial({
-//                                color: 0xff0000 ,
-                                map: texture,
-                            });//(红色)
+                                //每个储位单独赋予一个基础材质
+                            child.material = new THREE.MeshPhongMaterial({color:  0xff0000});//(红色)
 //                            child.material.map = texture;
 //                            }
-                }
-            } );
+                            }
+                        } );*/
+                        object.children[0].material = new THREE.MeshLambertMaterial({
+//                            color:  0xff0000,
+                            side: THREE.FrontSide,
+//                            opacity:0.6,
+//                            transparent:true,
+//                            ambient:'red',//环境色
+                            emissive:'green',
+//                            shiniess:5,
+//                            blending:THREE.NormalBlending,
+                            needsUpdate:true,
+                        });//(红色)
 
-            meshObj = object;
-            //放入场景
-            scene.add(object);
+                        meshObj = object;
+                        //放入场景
+                        scene.add(object);
 
-        }, onProgress, onError);
+                    },
+                    onProgress, onError);
+        });
+
+        mtlLoader.load('kaijuanji.mtl', function (materials) {
+            materials.preload();//预加载
+
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.setPath('obj/skjc/');
+            objLoader.load("kaijuanji.obj", function (object) {
+                        object.rotation.y = 0;
+                        object.position.x = -300;
+                        object.position.y = 110;
+                        object.position.z = 200;
+//            object.scale.set(0.1, 0.1, 0.1);//缩放
+                        object.name = 'kaijuanji';
+                        meshObj = object;
+                        //放入场景
+                        scene.add(object);
+
+                    },
+                    onProgress, onError);
+        });
+        //TODO  后期处理测试中
+        composer = new THREE.EffectComposer( renderer );
+
+        var renderPass = new THREE.RenderPass( scene, camera );
+        composer.addPass( renderPass );
+
+        outlinePass = new THREE.OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight ), scene, camera );
+        composer.addPass( outlinePass );
+
+        /*var onLoad = function ( texture ) {
+
+            outlinePass.patternTexture = texture;
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+
+        };*/
+
+        var loader = new THREE.TextureLoader();
+
+//        loader.load( 'images/caodi.jpg', onLoad );
+        loader.load( 'images/caodi.jpg', function(texture){
+            outlinePass.patternTexture = texture;
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+
+        } );
+
+        effectFXAA = new THREE.ShaderPass( THREE.FXAAShader );//抗锯齿效果
+        effectFXAA = new THREE.ShaderPass( THREE.ColorifyShader );//蒙上一层颜色
+//        effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
+        effectFXAA.renderToScreen = true;
+        composer.addPass( effectFXAA );
+        outlinePass.selectedObjects = obj3d;
+//        window.addEventListener( 'resize', onWindowResize, false );
+
+//        window.addEventListener( 'mousemove', onTouchMove );
+//        window.addEventListener( 'touchmove', onTouchMove );
+
+        function onTouchMove( event ) {
+
+            var x, y;
+
+            if ( event.changedTouches ) {
+
+                x = event.changedTouches[ 0 ].pageX;
+                y = event.changedTouches[ 0 ].pageY;
+
+            } else {
+
+                x = event.clientX;
+                y = event.clientY;
+
+            }
+
+            mouse.x = ( x / window.innerWidth ) * 2 - 1;
+            mouse.y = - ( y / window.innerHeight ) * 2 + 1;
+
+            checkIntersection();
+
+        }
+
+        function addSelectedObject( object ) {
+
+            selectedObjects = [];
+            selectedObjects.push( object );
+
+        }
+
+        function checkIntersection() {
+
+            raycaster.setFromCamera( mouse, camera );
+
+            var intersects = raycaster.intersectObjects( [ scene ], true );
+
+            if ( intersects.length > 0 ) {
+
+                var selectedObject = intersects[ 0 ].object;
+                addSelectedObject( selectedObject );
+                outlinePass.selectedObjects = selectedObjects;
+
+            } else {
+
+                // outlinePass.selectedObjects = [];
+
+            }
+
+        }
+        box.material = new THREE.MeshPhongMaterial({
+//            color: 0xff0000 ,
+            map: new THREE.TextureLoader().load('images/caodi.jpg'),
+        });//(红色)
+
+
+        /*obj3d.material = new THREE.MeshPhongMaterial({
+            color: 'red' ,
+            map: new THREE.TextureLoader().load('images/caodi.jpg'),
+        });//(红色)*/
+
+
+
         animate();
+
     }
     var onProgress = function(xhr) {
         if (xhr.lengthComputable) {
@@ -159,45 +340,48 @@
             var percent = document.getElementById("percent");
 //                    percent.innerText = Math.round(percentComplete, 2) + '% 已经加载';
         }
+
+       console.log("onProgress 方法执行完毕");
     };
     var onError = function(xhr) {};
     function animate() {
 
 
         requestAnimationFrame( animate );
+
         render();
 
+        /*if(OBJFlag){
+            /!*meshObj.traverse( function ( child ) {
+                if ( child instanceof THREE.Mesh ) {
+                    //给name为A开头的模型贴图
+//                            if(child.name.indexOf("A")==0){
+//                                child.material.map = texture;
+                    //每个储位单独赋予一个基础材质
+                    child.material = new THREE.MeshPhongMaterial({
+//                    color: 0xff0000 ,
+                        map: new THREE.TextureLoader().load('images/envmap1.jpg'),
+                    });//(红色)
+//                            child.material.map = texture;
+//                            }
+                    OBJFlag = false;
+                }
+            } );*!/
+            meshObj.children[0].material = new THREE.MeshPhongMaterial({
+                    color: 0xff0000 ,
+//                map: new THREE.TextureLoader().load('images/envmap1.jpg'),
+            });
 
+        }*/
 
     }
+
     function render(){
         var  texture = new THREE.TextureLoader().load('images/caodi.jpg');
 //        texture.wrapS = THREE.RepeatWrapping;
 //        texture.wrapT = THREE.RepeatWrapping;
 
 
-        /*meshObj.traverse( function ( child ) {
-            if ( child instanceof THREE.Mesh ) {
-                //给name为A开头的模型贴图
-//                            if(child.name.indexOf("A")==0){
-//                                child.material.map = texture;
-                //每个储位单独赋予一个基础材质
-                child.material = new THREE.MeshPhongMaterial({
-                    color: 0xff0000 ,
-//                    map: texture,
-                });//(红色)
-//                            child.material.map = texture;
-//                            }
-            }
-        } );*/
-
-        box.material = new THREE.MeshPhongMaterial({
-//            color: 0xff0000 ,
-//            map: new THREE.TextureLoader().load('images/caodi.jpg'),
-        });//(红色)
-
-//        meshObj.children[0].material.map = THREE.ImageUtils.loadTexture( 'images/caodi.jpg' );
-//        var  objectMesh = THREE.Scene.getObjectByName('ma_obj',true);
         scene.traverse( function ( child ) {
             if ( child instanceof THREE.Group ) {
 //                console.log("child.name  " +child.name);
@@ -233,6 +417,8 @@
         });*/
 
         renderer.render(scene, camera);//调用WebGLRenderer的render函数刷新场景
+
+
     }
 </script>
 </body>
