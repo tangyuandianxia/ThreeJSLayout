@@ -8,6 +8,7 @@
         body {
             font-family: Monospace;
             background-color: #000;
+            /*background-color: #969696;*/
             /*background-color: #fff;*/
             color: #fff;
             margin: 0px;
@@ -44,13 +45,26 @@
 <script src="../three.js-master/examples/js/shaders/FXAAShader.js"></script>
 <script src="../three.js-master/examples/js/postprocessing/EffectComposer.js"></script>
 <script src="../three.js-master/examples/js/postprocessing/RenderPass.js"></script>
+
 <script src="../three.js-master/examples/js/postprocessing/ShaderPass.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/shaders/CopyShader.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/shaders/ColorifyShader.js"></script>
+
 <script src="../three.js-master/examples/js/postprocessing/OutlinePass.js"></script>
-<script src="../three.js-master/examples/js/postprocessing/MaskPass.js"></script>
+
+<script type="text/javascript" src="../three.js-master/examples/js/postprocessing/BloomPass.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/shaders/ConvolutionShader.js"></script>
+
+<script type="text/javascript" src="../three.js-master/examples/js/postprocessing/MaskPass.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/postprocessing/FilmPass.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/shaders/FilmShader.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/shaders/SepiaShader.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/postprocessing/SavePass.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/postprocessing/TexturePass.js"></script>
 <div id="glFullscreen">
     <!--<canvas id="mainCanvas" width="1920" height="948"></canvas>-->
     <!--<canvas id="mainCanvas" width="1800" height="900"></canvas>-->
-    <canvas id="example"></canvas>
+    <canvas id="example" width="1800" height="900"></canvas>
 </div>
 
 <script type="text/javascript">
@@ -72,12 +86,20 @@
 
     var OBJFlag = true;
 
-    init();
+    var clock;
+    var controls;
+    var raycaster = null;
+    var mouse = new THREE.Vector2(), INTERSECTED;
 
+
+    init();
+//    animate();
     function init() {
         renderer = new THREE.WebGLRenderer({//渲染器
             canvas: document.getElementById('example')//画布
-            , alpha: true//设置场景透明
+            ,
+            alpha: true,//设置场景透明
+            antialias:true,//抗锯齿
         });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -88,14 +110,18 @@
         var helper = new THREE.GridHelper(1200, 60, 0xFF4444, 0x404040);
         scene.add(helper);
 
-        camera = new THREE.PerspectiveCamera( 45, 1, 0.1, 10000 );//透视摄影机
+        //在场景中添加坐标轴
+        var axes = new THREE.AxesHelper(2000);
+        scene.add(axes);
+
+        camera = new THREE.PerspectiveCamera( 30, 1, 0.1, 10000 );//透视摄影机
         camera.position.set(1300.0, 600.0, 1200.0);//相机位置
 
 //            camera.position.set(-0.0, 0.0, 0.0);//相机位置
 //            camera.lookAt(new THREE.Vector3(0, 2, 0));//lookAt()设置相机所看的位置
 //            camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
-//            camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
-        camera.lookAt(scene.position);//lookAt()设置相机所看的位置
+            camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
+//        camera.lookAt(scene.position);//lookAt()设置相机所看的位置
 
         scene.add(camera);//把相机添加到场景中
 
@@ -114,10 +140,39 @@
         scene.add(directionalLight2);
         scene.add(ambientLight);
 
+        //TODO 多场景测试
+        var sceneEarth = new THREE.Scene();
+        var sceneMars = new THREE.Scene();
+
+        var ambi = new THREE.AmbientLight(0x181818);
+        var ambi2 = new THREE.AmbientLight(0x181818);
+        sceneEarth.add(ambi);
+        sceneMars.add(ambi2);
+
+        var spotLight = new THREE.DirectionalLight('white');
+        spotLight.position.set(550, 100, 550);
+        spotLight.intensity = 0.6;
+
+        var spotLight2 = new THREE.DirectionalLight(0xffffff);
+        spotLight.position.set(0, 0, 100);
+        spotLight.intensity = 0.6;
+
+        sceneEarth.add(spotLight);
+        sceneMars.add(spotLight2);
+
+        sceneEarth.add(directionalLight1);
+        sceneEarth.add(directionalLight2);
+        sceneMars.add(directionalLight1);
+        sceneMars.add(directionalLight2);
+
 
 ////监听鼠标、键盘事件，旋转图形
-        var controls = new THREE.OrbitControls(camera);
+        controls = new THREE.OrbitControls(camera);
+//        controls = new THREE.TrackballControls( camera, renderer.domElement );
 
+
+        controls.autoRotate = false;
+        clock = new THREE.Clock();
 
         var material = new THREE.MeshPhongMaterial({
 //            color: 'green',
@@ -125,7 +180,7 @@
             map: new THREE.TextureLoader().load('images/xian1.jpg'),
         })
         box = new THREE.Mesh(new THREE.BoxBufferGeometry(100,100,100,10,10,10),material);
-//        scene.add(box);
+        scene.add(box);
 
         /***
          * 加载obj
@@ -159,7 +214,8 @@
                         obj3d.add(object);
                         group.add(object);
                         //放入场景
-                        scene.add(object);
+//                        scene.add(object);
+//                        sceneMars.add(object);
 
                     },
                     onProgress, onError);
@@ -173,9 +229,13 @@
             objLoader.setPath('obj/skjc/');
             objLoader.load("shukongjichuang2.obj", function (object) {
                         object.rotation.y = 0;
-                        object.position.x = 300;
-                        object.position.y = 100;
-                        object.position.z = 200;
+                        var x=300,y=100,z=200;
+                        object.position.x = x;
+                        object.position.y = y;
+                        object.position.z = z;
+                        var directionalLight = new THREE.DirectionalLight( 0xC0C090 );
+                        directionalLight.position.set( x, y, z );
+                        scene.add(directionalLight);
 //            object.scale.set(0.1, 0.1, 0.1);//缩放
 
                         object.name = 'shukongjichuang2';
@@ -191,7 +251,7 @@
 //                            }
                             }
                         } );*/
-                        object.children[0].material = new THREE.MeshLambertMaterial({
+                        /*object.children[0].material = new THREE.MeshLambertMaterial({
 //                            color:  0xff0000,
                             side: THREE.FrontSide,
 //                            opacity:0.6,
@@ -201,11 +261,16 @@
 //                            shiniess:5,
 //                            blending:THREE.NormalBlending,
                             needsUpdate:true,
-                        });//(红色)
+                        });//(红色)*/
 
                         meshObj = object;
+                        var boxhelper=new THREE.BoxHelper(object);
+//                        boxhelper.material.color.set("red");
+
+                        scene.add(boxhelper);
                         //放入场景
                         scene.add(object);
+//                        sceneEarth.add(object);
 
                     },
                     onProgress, onError);
@@ -225,6 +290,10 @@
 //            object.scale.set(0.1, 0.1, 0.1);//缩放
                         object.name = 'kaijuanji';
                         meshObj = object;
+
+                        var boxhelper=new THREE.BoxHelper(object);
+                        scene.add(boxhelper);
+
                         //放入场景
                         scene.add(object);
 
@@ -233,37 +302,48 @@
         });
         //TODO  后期处理测试中
         composer = new THREE.EffectComposer( renderer );
+        composer.renderTarget1.stencilBuffer = true;
+        composer.renderTarget2.stencilBuffer = true;
 
         var renderPass = new THREE.RenderPass( scene, camera );
-        composer.addPass( renderPass );
+        var renderPass1 = new THREE.RenderPass(sceneEarth, camera);
+        renderPass1.clear = false;
+        var renderPass2 = new THREE.RenderPass(sceneMars, camera);
+        renderPass2.clear = false;
+//        renderPass.clear = false;
+        /*outlinePass = new THREE.OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight ), scene, camera );
+        composer.addPass( outlinePass );*/
 
-        outlinePass = new THREE.OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight ), scene, camera );
-        composer.addPass( outlinePass );
+        var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+        effectCopy.renderToScreen = true;
 
-        /*var onLoad = function ( texture ) {
+        var clearMask = new THREE.ClearMaskPass();
+        var earthMask = new THREE.MaskPass(scene, camera);
+        // mars mask
+        var marsMask = new THREE.MaskPass(sceneMars, camera);
+        var effectSepia = new THREE.ShaderPass(THREE.SepiaShader);
+        effectSepia.uniforms['amount'].value = 0.8;
 
-            outlinePass.patternTexture = texture;
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
+        var effectColorify = new THREE.ShaderPass(THREE.ColorifyShader);
+//        effectColorify.uniforms['color'].value.setRGB(0.5, 0.5, 1);
+        effectColorify.uniforms['color'].value.setRGB(255, 99, 71);
 
-        };*/
 
-        var loader = new THREE.TextureLoader();
+        composer.addPass(renderPass);
+        composer.addPass(renderPass1);
+        composer.addPass(renderPass2);
 
-//        loader.load( 'images/caodi.jpg', onLoad );
-        loader.load( 'images/caodi.jpg', function(texture){
-            outlinePass.patternTexture = texture;
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
+        /*composer.addPass(earthMask);
+        composer.addPass(effectSepia);
+        composer.addPass(clearMask);*/
 
-        } );
+        composer.addPass(marsMask);
+        composer.addPass(effectColorify);
+        composer.addPass(clearMask);
 
-        effectFXAA = new THREE.ShaderPass( THREE.FXAAShader );//抗锯齿效果
-        effectFXAA = new THREE.ShaderPass( THREE.ColorifyShader );//蒙上一层颜色
-//        effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
-        effectFXAA.renderToScreen = true;
-        composer.addPass( effectFXAA );
-        outlinePass.selectedObjects = obj3d;
+        composer.addPass(effectCopy);
+
+//        outlinePass.selectedObjects = obj3d;
 //        window.addEventListener( 'resize', onWindowResize, false );
 
 //        window.addEventListener( 'mousemove', onTouchMove );
@@ -292,12 +372,6 @@
 
         }
 
-        function addSelectedObject( object ) {
-
-            selectedObjects = [];
-            selectedObjects.push( object );
-
-        }
 
         function checkIntersection() {
 
@@ -329,9 +403,22 @@
             map: new THREE.TextureLoader().load('images/caodi.jpg'),
         });//(红色)*/
 
+        //捕获模型
+        raycaster = new THREE.Raycaster();
+        mouse = new THREE.Vector2();
+//            var mouse = new THREE.Vector2(), INTERSECTED;
+//            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+//            document.addEventListener( 'mousemove', onMouseMove, false );
+//            id = setInterval(draw, 20);//每隔20s重绘一次
 
+        //TODO 测试
+        window.addEventListener( 'click', onMouseClick, false );
+// 通过鼠标点的位置和当前相机的矩阵计算出raycaster
+        raycaster.setFromCamera( mouse, camera );
 
-        animate();
+//        box.material.color.set( 'red' );
+
+        render();
 
     }
     var onProgress = function(xhr) {
@@ -344,9 +431,23 @@
        console.log("onProgress 方法执行完毕");
     };
     var onError = function(xhr) {};
+    function onMouseClick( event ) {
+
+        //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
+
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+
+// 获取raycaster直线和所有模型相交的数组集合
+        var intersects = raycaster.intersectObjects( scene.children,true );
+        /*for ( var i = 0; i < intersects.length; i++ ) {
+            //                intersects[ i ].object.material.color.set( 0xff0000 );
+            intersects[ i ].object.material.color.set( 'red' );
+        }*/
+    }
+
     function animate() {
-
-
         requestAnimationFrame( animate );
 
         render();
@@ -416,7 +517,14 @@
                     map: texture,
         });*/
 
-        renderer.render(scene, camera);//调用WebGLRenderer的render函数刷新场景
+        renderer.autoClear = false;
+        //sphere.rotation.y=step+=0.01;
+        var delta = clock.getDelta();
+        controls.update(delta);
+
+//        renderer.render(scene, camera);//调用WebGLRenderer的render函数刷新场景
+        requestAnimationFrame(render);
+        composer.render(delta);
 
 
     }
