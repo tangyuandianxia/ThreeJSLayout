@@ -24,6 +24,11 @@
             display:block;
         }
         #info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+
+        /*设置区域的style属性*/
+        .setStyle{
+            color:red;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +70,60 @@
     <!--<canvas id="mainCanvas" width="1920" height="948"></canvas>-->
     <!--<canvas id="mainCanvas" width="1800" height="900"></canvas>-->
     <canvas id="example" width="1800" height="900"></canvas>
+
+    <div style="position:absolute;left: 150px;top: 20px;height: 45px;width: 300px;">
+        <font id="mtao_name" class="setStyle">机床名:</font>
+        <input type="text" readonly="readonly" value="0" id="matoname" style="width: 150px">
+    </div>
+<div style="position:absolute;left: 370px;top: 17px;height: 45px;width: 450px;">
+    <table>
+        <tr>
+            <td>
+                <font class="setStyle">X ：</font>
+            </td>
+            <td>
+                <input type="text" readonly="readonly" value="0" id="X" style="width: 45px">
+
+            </td>
+            <td>
+                <font class="setStyle">Y ：</font>
+            </td>
+            <td>
+                <input type="text" readonly="readonly" value="0" id="Y" style="width: 45px"/>
+
+            </td>
+            <td>
+                <font class="setStyle">Z ：</font>
+            </td>
+            <td>
+                <input type="text" readonly="readonly" value="0" id="Z" style="width: 45px"/>
+
+            </td>
+            <td>
+                <font class="setStyle">宽：</font>
+            </td>
+            <td>
+                <input type="text" id="W" style="width: 45px">
+
+            </td>
+            <td>
+                <font class="setStyle">高：</font>
+            </td>
+            <td>
+                <input type="text" id="H" style="width: 45px">
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div style="position:absolute;left: 800px;top:17px;width: 120px;">
+    <font class="setStyle">应用于所有机床:</font><input type="checkbox" id="checkAll">
+</div>
+<button type="button" class="btn btn-default" onclick="image_change_save()" name="保存修改"
+        style="position:absolute;left:930px;top: 17px">
+    保存修改
+</button>
+
 </div>
 
 <script type="text/javascript">
@@ -103,6 +162,8 @@
         });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
+        var width = window.innerWidth;
+        var height = window.innerHeight;
 
         scene = new THREE.Scene();//创建场景
 
@@ -116,12 +177,14 @@
 
         camera = new THREE.PerspectiveCamera( 30, 1, 0.1, 10000 );//透视摄影机
         camera.position.set(1300.0, 600.0, 1200.0);//相机位置
-
+        camera.aspect = width / height;
 //            camera.position.set(-0.0, 0.0, 0.0);//相机位置
 //            camera.lookAt(new THREE.Vector3(0, 2, 0));//lookAt()设置相机所看的位置
 //            camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
             camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
 //        camera.lookAt(scene.position);//lookAt()设置相机所看的位置
+        camera.updateProjectionMatrix(); //调用updateProjectionMatrix方法,更新相机的投影矩阵.
+
 
         scene.add(camera);//把相机添加到场景中
 
@@ -329,19 +392,19 @@
         effectColorify.uniforms['color'].value.setRGB(255, 99, 71);
 
 
-        composer.addPass(renderPass);
-        composer.addPass(renderPass1);
-        composer.addPass(renderPass2);
+//        composer.addPass(renderPass);
+//        composer.addPass(renderPass1);
+//        composer.addPass(renderPass2);
 
         /*composer.addPass(earthMask);
         composer.addPass(effectSepia);
         composer.addPass(clearMask);*/
 
-        composer.addPass(marsMask);
+        /*composer.addPass(marsMask);
         composer.addPass(effectColorify);
         composer.addPass(clearMask);
 
-        composer.addPass(effectCopy);
+        composer.addPass(effectCopy);*/
 
 //        outlinePass.selectedObjects = obj3d;
 //        window.addEventListener( 'resize', onWindowResize, false );
@@ -373,25 +436,6 @@
         }
 
 
-        function checkIntersection() {
-
-            raycaster.setFromCamera( mouse, camera );
-
-            var intersects = raycaster.intersectObjects( [ scene ], true );
-
-            if ( intersects.length > 0 ) {
-
-                var selectedObject = intersects[ 0 ].object;
-                addSelectedObject( selectedObject );
-                outlinePass.selectedObjects = selectedObjects;
-
-            } else {
-
-                // outlinePass.selectedObjects = [];
-
-            }
-
-        }
         box.material = new THREE.MeshPhongMaterial({
 //            color: 0xff0000 ,
             map: new THREE.TextureLoader().load('images/caodi.jpg'),
@@ -412,6 +456,9 @@
 //            id = setInterval(draw, 20);//每隔20s重绘一次
 
         //TODO 测试
+        //自适应
+        window.addEventListener( 'resize', onWindowResize, false );
+
         window.addEventListener( 'click', onMouseClick, false );
 // 通过鼠标点的位置和当前相机的矩阵计算出raycaster
         raycaster.setFromCamera( mouse, camera );
@@ -431,6 +478,16 @@
        console.log("onProgress 方法执行完毕");
     };
     var onError = function(xhr) {};
+    //自适应
+    function onWindowResize() {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize( width, height );
+//            composer.setSize( width, height );
+//            effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
+    }
     function onMouseClick( event ) {
 
         //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
@@ -438,13 +495,29 @@
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-
+        raycaster.setFromCamera( mouse, camera );
 // 获取raycaster直线和所有模型相交的数组集合
         var intersects = raycaster.intersectObjects( scene.children,true );
         /*for ( var i = 0; i < intersects.length; i++ ) {
-            //                intersects[ i ].object.material.color.set( 0xff0000 );
-            intersects[ i ].object.material.color.set( 'red' );
-        }*/
+         //                intersects[ i ].object.material.color.set( 0xff0000 );
+         intersects[ i ].object.material.color.set( 'red' );
+         }*/
+        if(intersects.length >0){
+            /*for ( var i = 0; i < intersects.length; i++ ) {
+                if(intersects[i].object.parent instanceof THREE.Group){
+                    alert("test"+"intersects[i].object.parent"+intersects[i].object.parent.position);
+                }
+            }*/
+            //第一个符合条件的物体
+            var getObj = intersects[0].object.parent;
+            if(getObj instanceof THREE.Group){
+                document.getElementById('X').value = getObj.position.x;
+                document.getElementById('Y').value = getObj.position.y;
+                document.getElementById('Z').value = getObj.position.z;
+
+                document.getElementById('matoname').value = getObj.name;
+            }
+        }
     }
 
     function animate() {
@@ -508,23 +581,14 @@
             }
         } );
 
-        /*meshObj.children[4].material = new THREE.MeshPhongMaterial({
-            color: 'red' ,
-                    map: texture,
-        });
-        meshObj.children[7].material = new THREE.MeshPhongMaterial({
-            color: 'red' ,
-                    map: texture,
-        });*/
-
-        renderer.autoClear = false;
+        /*renderer.autoClear = false;
         //sphere.rotation.y=step+=0.01;
         var delta = clock.getDelta();
-        controls.update(delta);
+        controls.update(delta);*/
 
-//        renderer.render(scene, camera);//调用WebGLRenderer的render函数刷新场景
+        renderer.render(scene, camera);//调用WebGLRenderer的render函数刷新场景
         requestAnimationFrame(render);
-        composer.render(delta);
+//        composer.render(delta);
 
 
     }
