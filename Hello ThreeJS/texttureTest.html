@@ -11,8 +11,12 @@
             /*background-color: #969696;*/
             /*background-color: #fff;*/
             color: #fff;
-            margin: 0px;
-            overflow: hidden;
+            /*margin: 0px;*/
+            /*overflow: hidden;*/
+            margin: 0 0 0 0;
+            padding: 0 0 0 0;
+            border: none;
+            cursor: default;
         }
         #info {
             color: #fff;
@@ -25,11 +29,37 @@
         }
         #info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
 
+        #glFullscreen {
+            width: 100%;
+            height: 100vh;
+            min-width: 640px;
+            min-height: 360px;
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+        }
+        #example {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #000000;
+            z-index: 0;
+        }
+
         /*设置区域的style属性*/
         .setStyle{
             color:red;
         }
+
+        .dg.ac {
+            z-index: 1 !important; /* FIX DAT.GUI */
+        }
     </style>
+    <style>
+        /*.dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1!important}.dg.main .close-button.drag,.dg.main:hover .close-button{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;transition:opacity .1s linear;border:0;position:absolute;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-x:hidden}.dg.a.has-save>ul{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{position:fixed;top:0;z-index:1002}.dg li{-webkit-transition:height .1s ease-out;transition:height .1s ease-out}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;overflow:hidden;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid transparent}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:9px}.dg .c select{margin-top:5px}.dg .cr.boolean,.dg .cr.boolean *,.dg .cr.function,.dg .cr.function *,.dg .cr.function .property-name{cursor:pointer}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco,monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px Lucida Grande,sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid hsla(0,0%,100%,.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2fa1d6}.dg .cr.number input[type=text]{color:#2fa1d6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.boolean:hover,.dg .cr.function:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2fa1d6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}*/
+    </style>
+    <script src="../three.js-master/examples/js/libs/dat.gui.min.js"></script>
 </head>
 <body>
 <!--<script type="text/javascript" src="../learning-threejs-master/libs/three.js"></script>
@@ -66,37 +96,55 @@
 <script type="text/javascript" src="../three.js-master/examples/js/shaders/SepiaShader.js"></script>
 <script type="text/javascript" src="../three.js-master/examples/js/postprocessing/SavePass.js"></script>
 <script type="text/javascript" src="../three.js-master/examples/js/postprocessing/TexturePass.js"></script>
-<div id="glFullscreen">
-    <!--<canvas id="mainCanvas" width="1920" height="948"></canvas>-->
-    <!--<canvas id="mainCanvas" width="1800" height="900"></canvas>-->
-    <canvas id="example" width="1800" height="900"></canvas>
 
-    <div style="position:absolute;left: 150px;top: 20px;height: 45px;width: 300px;">
-        <font id="mtao_name" class="setStyle">机床名:</font>
-        <input type="text" readonly="readonly" value="0" id="matoname" style="width: 150px">
+<!--<div id="info">
+    <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - OBJLoader2 direct loader test
+    <input value="test">
+    <div id="feedback"></div>
+</div>-->
+<!--<div class="dg ac">
+    <div class="dg main a" style="width: 300px;">
+        <ul>
+            <li class="cr number has-slider">
+                <div>
+                    <div class="c">
+                        <div>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
     </div>
-<div style="position:absolute;left: 370px;top: 17px;height: 45px;width: 450px;">
+</div>-->
+
+<div style="position:absolute;left: 150px;top: 20px;height: 45px;width: 230px;z-index:300;">
+    <font id="mtao_name" class="setStyle">机床名:</font>
+    <input type="text" value="" id="matoname" style="width: 150px;z-index:800;">
+</div>
+<div style="position:absolute;left: 370px;top: 17px;height: 45px;width: 450px;z-index:200">
     <table>
         <tr>
             <td>
                 <font class="setStyle">X ：</font>
             </td>
             <td>
-                <input type="text" readonly="readonly" value="0" id="X" style="width: 45px">
+                <input type="text" value="0" id="X" style="width: 45px;">
 
             </td>
             <td>
                 <font class="setStyle">Y ：</font>
             </td>
             <td>
-                <input type="text" readonly="readonly" value="0" id="Y" style="width: 45px"/>
+                <input type="text" value="0" id="Y" style="width: 45px"/>
 
             </td>
             <td>
                 <font class="setStyle">Z ：</font>
             </td>
             <td>
-                <input type="text" readonly="readonly" value="0" id="Z" style="width: 45px"/>
+                <input type="text" value="0" id="Z" style="width: 45px"/>
 
             </td>
             <td>
@@ -116,18 +164,23 @@
     </table>
 
 </div>
-<div style="position:absolute;left: 800px;top:17px;width: 120px;">
+<div style="position:absolute;left: 800px;top:17px;width: 120px;z-index:200;">
     <font class="setStyle">应用于所有机床:</font><input type="checkbox" id="checkAll">
 </div>
 <button type="button" class="btn btn-default" onclick="image_change_save()" name="保存修改"
-        style="position:absolute;left:930px;top: 17px">
+        style="position:absolute;left:930px;top: 17px;z-index:200;">
     保存修改
 </button>
+<button type="button" class="btn btn-default" onclick="add_machine()" name="添加设备"
+        style="position:absolute;left:1030px;top: 17px;z-index:200;">
+    添加设备
+</button>
+<div id="glFullscreen">
+    <canvas id="example"></canvas>
 
 </div>
-
 <script type="text/javascript">
-    var container;
+    var container, stats;
     var camera, scene, renderer;
 
     var  meshObj = null;
@@ -150,10 +203,43 @@
     var raycaster = null;
     var mouse = new THREE.Vector2(), INTERSECTED;
 
+    var countNum = 0;
+    id = setInterval(getJson, 5000);//每隔20s重绘一次
+
+
+    var params = {
+        edgeStrength: 3.0,
+        edgeGlow: 0.0,
+        edgeThickness: 1.0,
+        pulsePeriod: 0,
+        rotate: false,
+        usePatternTexture: false
+    };
+    var paramsControls = new function (){
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
+    var gui = new dat.GUI( { width: 300 } );
+    gui.add( params, 'rotate' );
+//    gui.add( paramsControls, 'zuobiao', -1000, 1000 );
 
     init();
 //    animate();
     function init() {
+        /*container = document.createElement( 'div' );
+        document.body.appendChild( container );
+
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.shadowMap.enabled = true;
+        renderer.antialias = true;
+        // todo - support pixelRatio in this demo
+        renderer.setSize( width, height );
+        document.body.appendChild( renderer.domElement );*/
+
         renderer = new THREE.WebGLRenderer({//渲染器
             canvas: document.getElementById('example')//画布
             ,
@@ -172,6 +258,7 @@
         scene.add(helper);
 
         //在场景中添加坐标轴
+        //X轴红色，Y轴绿色，Z轴蓝色。
         var axes = new THREE.AxesHelper(2000);
         scene.add(axes);
 
@@ -179,7 +266,6 @@
         camera.position.set(1300.0, 600.0, 1200.0);//相机位置
         camera.aspect = width / height;
 //            camera.position.set(-0.0, 0.0, 0.0);//相机位置
-//            camera.lookAt(new THREE.Vector3(0, 2, 0));//lookAt()设置相机所看的位置
 //            camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
             camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
 //        camera.lookAt(scene.position);//lookAt()设置相机所看的位置
@@ -203,31 +289,6 @@
         scene.add(directionalLight2);
         scene.add(ambientLight);
 
-        //TODO 多场景测试
-        var sceneEarth = new THREE.Scene();
-        var sceneMars = new THREE.Scene();
-
-        var ambi = new THREE.AmbientLight(0x181818);
-        var ambi2 = new THREE.AmbientLight(0x181818);
-        sceneEarth.add(ambi);
-        sceneMars.add(ambi2);
-
-        var spotLight = new THREE.DirectionalLight('white');
-        spotLight.position.set(550, 100, 550);
-        spotLight.intensity = 0.6;
-
-        var spotLight2 = new THREE.DirectionalLight(0xffffff);
-        spotLight.position.set(0, 0, 100);
-        spotLight.intensity = 0.6;
-
-        sceneEarth.add(spotLight);
-        sceneMars.add(spotLight2);
-
-        sceneEarth.add(directionalLight1);
-        sceneEarth.add(directionalLight2);
-        sceneMars.add(directionalLight1);
-        sceneMars.add(directionalLight2);
-
 
 ////监听鼠标、键盘事件，旋转图形
         controls = new THREE.OrbitControls(camera);
@@ -235,15 +296,16 @@
 
 
         controls.autoRotate = false;
+        //使用 掩膜需要的
         clock = new THREE.Clock();
 
-        var material = new THREE.MeshPhongMaterial({
+        /*var material = new THREE.MeshPhongMaterial({
 //            color: 'green',
             wireframe:false,
             map: new THREE.TextureLoader().load('images/xian1.jpg'),
         })
         box = new THREE.Mesh(new THREE.BoxBufferGeometry(100,100,100,10,10,10),material);
-        scene.add(box);
+        scene.add(box);*/
 
         /***
          * 加载obj
@@ -253,163 +315,12 @@
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
 
-        var mtlLoader = new THREE.MTLLoader();
-        mtlLoader.setPath('obj/skjc/');
-        mtlLoader.load('shukongjichuang.mtl', function (materials) {
-            materials.preload();//预加载
+        var path = 'obj/skjc/';
+        loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuang',0,100,0);
+        loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuang2',300,100,200);
+        loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kaijuanji',-300,110,200);
 
-            var objLoader = new THREE.OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.setPath('obj/skjc/');
-//                objLoader.setPath('obj/');
-//                objLoader.load('OBJ-TEST.obj', function(object) {
-//                objLoader.load('car.obj', function(object) {
-            objLoader.load("shukongjichuang.obj", function (object) {
-                        object.rotation.y = 0;
-                        object.position.x = 0;
-                        object.position.y = 100;
-                        object.position.z = 0;
-//            object.scale.set(0.1, 0.1, 0.1);//缩放
-
-                        object.name = 'shukongjichuang';
-//                    object.scale.multiplyScalar(1);
-                        meshObj = object;
-                        obj3d.add(object);
-                        group.add(object);
-                        //放入场景
-//                        scene.add(object);
-//                        sceneMars.add(object);
-
-                    },
-                    onProgress, onError);
-        });
-
-        mtlLoader.load('shukongjichuang2.mtl', function (materials) {
-            materials.preload();//预加载
-
-            var objLoader = new THREE.OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.setPath('obj/skjc/');
-            objLoader.load("shukongjichuang2.obj", function (object) {
-                        object.rotation.y = 0;
-                        var x=300,y=100,z=200;
-                        object.position.x = x;
-                        object.position.y = y;
-                        object.position.z = z;
-                        var directionalLight = new THREE.DirectionalLight( 0xC0C090 );
-                        directionalLight.position.set( x, y, z );
-                        scene.add(directionalLight);
-//            object.scale.set(0.1, 0.1, 0.1);//缩放
-
-                        object.name = 'shukongjichuang2';
-//                    object.scale.multiplyScalar(1);
-                        /*object.traverse( function ( child ) {
-                            if ( child instanceof THREE.Mesh ) {
-                                //给name为A开头的模型贴图
-//                            if(child.name.indexOf("A")==0){
-//                                child.material.map = texture;
-                                //每个储位单独赋予一个基础材质
-                            child.material = new THREE.MeshPhongMaterial({color:  0xff0000});//(红色)
-//                            child.material.map = texture;
-//                            }
-                            }
-                        } );*/
-                        /*object.children[0].material = new THREE.MeshLambertMaterial({
-//                            color:  0xff0000,
-                            side: THREE.FrontSide,
-//                            opacity:0.6,
-//                            transparent:true,
-//                            ambient:'red',//环境色
-//                            emissive:'green',
-//                            shiniess:5,
-//                            blending:THREE.NormalBlending,
-                            needsUpdate:true,
-                        });//(红色)*/
-
-                        meshObj = object;
-                        var boxhelper=new THREE.BoxHelper(object);
-//                        boxhelper.material.color.set("red");
-
-                        scene.add(boxhelper);
-                        //放入场景
-                        scene.add(object);
-//                        sceneEarth.add(object);
-
-                    },
-                    onProgress, onError);
-        });
-
-        mtlLoader.load('kaijuanji.mtl', function (materials) {
-            materials.preload();//预加载
-
-            var objLoader = new THREE.OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.setPath('obj/skjc/');
-            objLoader.load("kaijuanji.obj", function (object) {
-                        object.rotation.y = 0;
-                        object.position.x = -300;
-                        object.position.y = 110;
-                        object.position.z = 200;
-//            object.scale.set(0.1, 0.1, 0.1);//缩放
-                        object.name = 'kaijuanji';
-                        meshObj = object;
-
-                        var boxhelper=new THREE.BoxHelper(object);
-                        scene.add(boxhelper);
-
-                        //放入场景
-                        scene.add(object);
-
-                    },
-                    onProgress, onError);
-        });
         //TODO  后期处理测试中
-        composer = new THREE.EffectComposer( renderer );
-        composer.renderTarget1.stencilBuffer = true;
-        composer.renderTarget2.stencilBuffer = true;
-
-        var renderPass = new THREE.RenderPass( scene, camera );
-        var renderPass1 = new THREE.RenderPass(sceneEarth, camera);
-        renderPass1.clear = false;
-        var renderPass2 = new THREE.RenderPass(sceneMars, camera);
-        renderPass2.clear = false;
-//        renderPass.clear = false;
-        /*outlinePass = new THREE.OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight ), scene, camera );
-        composer.addPass( outlinePass );*/
-
-        var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-        effectCopy.renderToScreen = true;
-
-        var clearMask = new THREE.ClearMaskPass();
-        var earthMask = new THREE.MaskPass(scene, camera);
-        // mars mask
-        var marsMask = new THREE.MaskPass(sceneMars, camera);
-        var effectSepia = new THREE.ShaderPass(THREE.SepiaShader);
-        effectSepia.uniforms['amount'].value = 0.8;
-
-        var effectColorify = new THREE.ShaderPass(THREE.ColorifyShader);
-//        effectColorify.uniforms['color'].value.setRGB(0.5, 0.5, 1);
-        effectColorify.uniforms['color'].value.setRGB(255, 99, 71);
-
-
-//        composer.addPass(renderPass);
-//        composer.addPass(renderPass1);
-//        composer.addPass(renderPass2);
-
-        /*composer.addPass(earthMask);
-        composer.addPass(effectSepia);
-        composer.addPass(clearMask);*/
-
-        /*composer.addPass(marsMask);
-        composer.addPass(effectColorify);
-        composer.addPass(clearMask);
-
-        composer.addPass(effectCopy);*/
-
-//        outlinePass.selectedObjects = obj3d;
-//        window.addEventListener( 'resize', onWindowResize, false );
-
-//        window.addEventListener( 'mousemove', onTouchMove );
 //        window.addEventListener( 'touchmove', onTouchMove );
 
         function onTouchMove( event ) {
@@ -431,21 +342,7 @@
             mouse.x = ( x / window.innerWidth ) * 2 - 1;
             mouse.y = - ( y / window.innerHeight ) * 2 + 1;
 
-            checkIntersection();
-
         }
-
-
-        box.material = new THREE.MeshPhongMaterial({
-//            color: 0xff0000 ,
-            map: new THREE.TextureLoader().load('images/caodi.jpg'),
-        });//(红色)
-
-
-        /*obj3d.material = new THREE.MeshPhongMaterial({
-            color: 'red' ,
-            map: new THREE.TextureLoader().load('images/caodi.jpg'),
-        });//(红色)*/
 
         //捕获模型
         raycaster = new THREE.Raycaster();
@@ -460,10 +357,9 @@
         window.addEventListener( 'resize', onWindowResize, false );
 
         window.addEventListener( 'click', onMouseClick, false );
-// 通过鼠标点的位置和当前相机的矩阵计算出raycaster
-        raycaster.setFromCamera( mouse, camera );
 
-//        box.material.color.set( 'red' );
+        //TODO 双击事件测试
+        window.addEventListener( 'dblclick', onMouseDBClick, false );
 
         render();
 
@@ -485,29 +381,17 @@
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize( width, height );
-//            composer.setSize( width, height );
-//            effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
     }
     function onMouseClick( event ) {
-
         //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
-
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
+        // 通过鼠标点的位置和当前相机的矩阵计算出raycaster
         raycaster.setFromCamera( mouse, camera );
-// 获取raycaster直线和所有模型相交的数组集合
+
+        // 获取raycaster直线和所有模型相交的数组集合
         var intersects = raycaster.intersectObjects( scene.children,true );
-        /*for ( var i = 0; i < intersects.length; i++ ) {
-         //                intersects[ i ].object.material.color.set( 0xff0000 );
-         intersects[ i ].object.material.color.set( 'red' );
-         }*/
         if(intersects.length >0){
-            /*for ( var i = 0; i < intersects.length; i++ ) {
-                if(intersects[i].object.parent instanceof THREE.Group){
-                    alert("test"+"intersects[i].object.parent"+intersects[i].object.parent.position);
-                }
-            }*/
             //第一个符合条件的物体
             var getObj = intersects[0].object.parent;
             if(getObj instanceof THREE.Group){
@@ -517,36 +401,57 @@
 
                 document.getElementById('matoname').value = getObj.name;
             }
+//            intersects[0].object.material[0].color.set( 'red' );
+//            intersects[0].object.material[0].color.set( 'green' );
+
+            /*intersects[0].object.traverse( function ( child ) {
+                if (child instanceof THREE.Mesh) {
+                    child.material.needsUpdate = true;
+                    for(var i=0;i<child.material.length;i++){
+                        child.material[i].color.set( 'green' );
+                    }
+                }
+            });*/
+            changeColor(intersects[0].object,'red');
+//            intersects[0].object.material[0].color.set( 'orange' );
+//            intersects[0].object.material[0].emissive.set( 'red' )
         }
     }
+    function onMouseDBClick( event ) {
+        //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        // 通过鼠标点的位置和当前相机的矩阵计算出raycaster
+        raycaster.setFromCamera( mouse, camera );
+        // 获取raycaster直线和所有模型相交的数组集合
+        var intersects = raycaster.intersectObjects( scene.children,true );
+        if(intersects.length >0){
+            //第一个符合条件的物体
+            var getObj = intersects[0].object.parent;
+            if(getObj instanceof THREE.Group){
+                document.getElementById('X').value = getObj.position.x;
+                document.getElementById('Y').value = getObj.position.y;
+                document.getElementById('Z').value = getObj.position.z;
 
+                document.getElementById('matoname').value = getObj.name;
+            }
+//            intersects[0].object.material[0].color.set( 'green' );
+//            intersects[0].object.material[0].color.setRGB(0.5887,0.5887,0.5887);
+            /*intersects[0].object.traverse( function ( child ) {
+                if (child instanceof THREE.Mesh) {
+                    child.material.needsUpdate = true;
+                    for(var i=0;i<child.material.length;i++){
+                        child.material[i].color.setRGB(0.5887,0.5887,0.5887);
+                    }
+                }
+            });*/
+            resetColor(intersects[0].object);
+//            intersects[0].object.material[0].emissive.set( 'red' );
+        }
+    }
     function animate() {
         requestAnimationFrame( animate );
-
         render();
-
-        /*if(OBJFlag){
-            /!*meshObj.traverse( function ( child ) {
-                if ( child instanceof THREE.Mesh ) {
-                    //给name为A开头的模型贴图
-//                            if(child.name.indexOf("A")==0){
-//                                child.material.map = texture;
-                    //每个储位单独赋予一个基础材质
-                    child.material = new THREE.MeshPhongMaterial({
-//                    color: 0xff0000 ,
-                        map: new THREE.TextureLoader().load('images/envmap1.jpg'),
-                    });//(红色)
-//                            child.material.map = texture;
-//                            }
-                    OBJFlag = false;
-                }
-            } );*!/
-            meshObj.children[0].material = new THREE.MeshPhongMaterial({
-                    color: 0xff0000 ,
-//                map: new THREE.TextureLoader().load('images/envmap1.jpg'),
-            });
-
-        }*/
 
     }
 
@@ -558,31 +463,10 @@
 
         scene.traverse( function ( child ) {
             if ( child instanceof THREE.Group ) {
-//                console.log("child.name  " +child.name);
-                /*//给name为A开头的模型贴图
-                if(child.name.indexOf("ma_obj")==0){
-//                    console.log("mamamam");
-                    child.traverse( function ( child ) {
-                        child.material = new THREE.MeshPhongMaterial({
-                            color: 0xff0000 ,
-                            map: texture,
-                        });//(红色)
-                        child.material.needsUpdate = true;
-                    });
-                    child.material.needsUpdate = true;
-                    /!*for(var i=0;i < child.children.length;i++){
-                        child.children[i].material = new THREE.MeshPhongMaterial({
-                            color: 0xff0000 ,
-                            map: texture,
-                        });
-                    }*!/
-                }*/
-
             }
         } );
 
         /*renderer.autoClear = false;
-        //sphere.rotation.y=step+=0.01;
         var delta = clock.getDelta();
         controls.update(delta);*/
 
@@ -591,6 +475,99 @@
 //        composer.render(delta);
 
 
+    }
+
+    function loadMTLOBJ(mtlPath,mtl,objPath,obj,objName,X,Y,Z){
+        var mtlLoader = new THREE.MTLLoader();
+//        mtlLoader.setPath('obj/skjc/');
+        mtlLoader.setPath(mtlPath);
+        mtlLoader.load(mtl+'.mtl', function (materials) {
+            materials.preload();//预加载
+
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+//            objLoader.setPath('obj/skjc/');
+            objLoader.setPath(objPath);
+            objLoader.load(obj+'.obj', function (object) {
+                        object.rotation.y = 0;
+                        object.position.x = X;
+                        object.position.y = Y;
+                        object.position.z = Z;
+//            object.scale.set(0.1, 0.1, 0.1);//缩放
+//                        object.name = 'kaijuanji';
+                        object.name = objName;
+                        meshObj = object;
+
+                        /*var boxhelper=new THREE.BoxHelper(object);
+                        scene.add(boxhelper);*/
+                        //放入场景
+                        scene.add(object);
+
+                    },
+                    onProgress, onError);
+        });
+    }
+
+    function getJson(){
+        countNum ++ ;
+
+//            scene.getObjectById ( id );
+        /**
+         * 根据name 获取obj模型
+         * @type {any}
+         */
+        var obj = scene.getObjectByName ( 'kaijuanji' );
+        if(countNum % 2 ==0){
+//            obj.children[0].material[0].color.setRGB(0.5887,0.5887,0.5887);
+            resetColor(obj);
+        }else{
+//            obj.children[0].material[0].color.set( 'red' );
+            changeColor(obj,'red');
+        }
+    }
+    /**
+     * 改变颜色
+     * @param obj
+     * @param color
+     */
+    function changeColor(obj,color) {
+        obj.traverse( function ( child ) {
+            if (child instanceof THREE.Mesh) {
+                child.material.needsUpdate = true;
+                for(var i=0;i<child.material.length;i++){
+//                    child.material[i].color.set( 'red' );
+                    child.material[i].color.set( color );
+                }
+            }
+        });
+    }
+    /**
+     * 重置颜色
+     * @param obj
+     */
+    //TODO 如果有不同的模型，需要测试方法是否需要改变
+    function resetColor(obj) {
+        obj.traverse( function ( child ) {
+            if (child instanceof THREE.Mesh) {
+                child.material.needsUpdate = true;
+                for(var i=0;i<child.material.length;i++){
+                    child.material[i].color.setRGB(0.5887,0.5887,0.5887);
+                }
+            }
+        });
+    }
+    //TODO 测试 点击事件
+    function image_change_save(){
+        //获取选中的设备
+        var matoname = document.getElementById('matoname').value;
+        var obj = scene.getObjectByName (matoname);
+        obj.position.x = document.getElementById('X').value;
+        obj.position.y = document.getElementById('Y').value;
+        obj.position.z = document.getElementById('Z').value;
+    }
+    function add_machine(){
+        var path = 'obj/skjc/';
+        loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuang2',500,100,200);
     }
 </script>
 </body>
