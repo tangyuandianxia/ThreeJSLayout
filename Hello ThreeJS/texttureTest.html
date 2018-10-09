@@ -351,7 +351,9 @@
 //            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 //            document.addEventListener( 'mousemove', onMouseMove, false );
 //            id = setInterval(draw, 20);//每隔20s重绘一次
+        createText('这是进行过测试的文字ThreeJS',300,100,200);
 
+        createText_another();
         //TODO 测试
         //自适应
         window.addEventListener( 'resize', onWindowResize, false );
@@ -455,7 +457,7 @@
 
     }
 
-    function render(){
+    function render(){4
         var  texture = new THREE.TextureLoader().load('images/caodi.jpg');
 //        texture.wrapS = THREE.RepeatWrapping;
 //        texture.wrapT = THREE.RepeatWrapping;
@@ -524,6 +526,129 @@
 //            obj.children[0].material[0].color.set( 'red' );
             changeColor(obj,'red');
         }
+    }
+    /**
+     *
+     * 生成文字
+     * 方法2
+     */
+    function createText_another(){
+        var loader = new THREE.FontLoader();
+        //加载字体库，加载成功后将字体库传给回调函数；
+        loader.load('fonts/Microsoft YaHei_Regular.json',function(response) {
+            var font = response;
+            /*创建字体几何图形，其中TextGeometry的第一个参数是需要绘制的文本，第二个参数是一个json对象，设置如何绘制文本，具体意义为：
+             font: 使用的字体库；
+             size:绘制字体的大小；
+             height:绘制文本的厚度；
+             bevelEnabled：是否允许棱角平滑过渡；
+             bevelSize:棱角平滑过渡的尺寸；*/
+            //注意:bevelSize通常要比size和height小一个量级，过渡带就会很饱满甚至比文本主体本身还要大
+
+
+            var textGeometry = new THREE.TextGeometry("学习Three.js", {
+                "font": font,
+                "size": 70,
+                "height": 20,
+                "bevelEnabled": true,
+                "bevelSize": 2
+            })
+
+            /*在3D世界里所有的物体都是由网格构成的，在three.js中，绘制图形的步骤是：
+             先使用geometry定义图形的几何形状，然后使用几何形状和材质构建网格;*/
+
+            /*这里使用材质数组来对网格进行修饰，材质数组的第一项修饰文字正面和背面，
+             第二项修饰文字的侧面即顶部和底部。使用的两个材质都是MeshPhongMaterial,这种材质的特点是能够像塑料一样反光。*/
+            text = new THREE.Mesh(textGeometry, new THREE.MultiMaterial([
+                new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading}),
+                new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.SmoothShading})
+            ]))
+            textGeometry.computeBoundingBox();
+
+            var centerOffset = -0.5 * (textGeometry.boundingBox.max.x-textGeometry.boundingBox.min.x);
+            text.position.x = centerOffset;
+            text.position.y = 30;
+
+            scene.add(text);
+            var plane = new THREE.Mesh(
+                    new THREE.PlaneBufferGeometry( 10000, 10000 ),
+                    new THREE.MeshBasicMaterial( { color: 0xfffffff, opacity: 0.5, transparent: true } )
+            );
+            plane.rotation.x = -Math.PI/2;
+            plane.position.y = 0;
+//            scene.add(plane);
+
+            });
+
+        }
+
+    /**
+     * 生成文字
+     * @param msg  文字
+     * @param x
+     * @param y
+     * @param z
+     */
+    function  createText(msg,x,y,z){
+        //引入文字
+        var loader = new THREE.FontLoader();
+//        loader.load( '../three.js-master/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+//        loader.load( '../three.js-master/examples/fonts/optimer_regular.typeface.json', function ( font ) {
+        loader.load( 'fonts/Microsoft YaHei_Regular.json', function ( font ) {
+//        loader.load( '../three.js-master/examples/fonts/gentilis_regular.typeface.json', function ( font ) {
+//        loader.load( '../three.js-master/examples/fonts/gentilis_bold.typeface.json', function ( font ) {
+
+            var xMid, text;
+
+            var textShape = new THREE.BufferGeometry();
+
+//                var color = 0x006699;
+            var color = 'yellow';
+
+            var matDark = new THREE.LineBasicMaterial( {
+                color: color,
+                side: THREE.DoubleSide
+            } );
+
+            var matLite = new THREE.MeshBasicMaterial( {
+//                wireframe:true,
+//                wireframeLinewidth:20,
+                color: color,
+                transparent: true,
+//                opacity: 0.4,//透明度
+                side: THREE.DoubleSide
+            } );
+
+//                var message = "   Three.js\nSimple text.";
+            var message = msg;
+
+            //控制字体大小和内容
+            var shapes = font.generateShapes( message, 20 );
+
+            var geometry = new THREE.ShapeGeometry( shapes );
+
+            geometry.computeBoundingBox();
+
+//                xMid = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+            xMid = - 1.0 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+
+            geometry.translate( xMid, 100, 0 );
+
+            // make shape ( N.B. edge view not visible )
+
+            textShape.fromGeometry( geometry );
+
+            text = new THREE.Mesh( textShape, matLite );
+            /*text.position.x = x;
+            text.position.y = y;
+            text.position.z = z;*/
+            text.position.set( x, y, z );
+//            textMesh.position.set( 50, 100, 50 );
+//            textMesh.rotation.x = -Math.PI / 4;
+            text.name = "texTest";
+            scene.add( text );
+
+        } ); //end load function
     }
     /**
      * 改变颜色
