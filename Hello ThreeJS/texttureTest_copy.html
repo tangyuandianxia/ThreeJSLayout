@@ -7,9 +7,9 @@
     <style>
         body {
             font-family: Monospace;
-            background-color: #000;
+            /*background-color: #000;*/
             /*background-color: #969696;*/
-            /*background-color: #fff;*/
+            background-color: #fff;
             color: #fff;
             /*margin: 0px;*/
             /*overflow: hidden;*/
@@ -43,7 +43,8 @@
             height: 100%;
             top: 0;
             left: 0;
-            background-color: #000000;
+            /*background-color: #000000;*/
+            background-color: #fff;
             z-index: 0;
         }
 
@@ -74,7 +75,7 @@
 
 <script src="../three.js-master/examples/js/controls/DragControls.js"></script>
 
-<script src="../three.js-master/examples/js/shaders/CopyShader.js"></script>
+<!--<script src="../three.js-master/examples/js/shaders/CopyShader.js"></script>
 <script src="../three.js-master/examples/js/shaders/FXAAShader.js"></script>
 <script src="../three.js-master/examples/js/postprocessing/EffectComposer.js"></script>
 <script src="../three.js-master/examples/js/postprocessing/RenderPass.js"></script>
@@ -93,12 +94,19 @@
 <script type="text/javascript" src="../three.js-master/examples/js/shaders/FilmShader.js"></script>
 <script type="text/javascript" src="../three.js-master/examples/js/shaders/SepiaShader.js"></script>
 <script type="text/javascript" src="../three.js-master/examples/js/postprocessing/SavePass.js"></script>
-<script type="text/javascript" src="../three.js-master/examples/js/postprocessing/TexturePass.js"></script>
+<script type="text/javascript" src="../three.js-master/examples/js/postprocessing/TexturePass.js"></script>-->
 
 
 <!--<script type="text/javascript" src="jquery.min.js"></script>-->
 <iframe src="iframe.html" id="iframe" scrolling="no" frameborder="0" width="100%" height="45px" ></iframe>
-
+<div style="display: none;">
+    <span style="font-size: 16px;color:red;">X</span>
+    <input id="x"/>
+    <span style="font-size: 16px;color:red;">Y</span>
+    <input id="y"  />
+    <span style="font-size: 16px;color:red;">Z</span>
+    <input id="z"  />
+</div>
 <div id="glFullscreen">
     <canvas id="example"></canvas>
 
@@ -136,6 +144,11 @@
 
     var DragControls;
     var loadMTLOBJFlag = false;
+    //文字对象
+    var textGroup = [];
+    var isRemoveTextGroup = [];
+    //双击事件是否打开新页面
+    var onMouseDBClickFlag = true;
     init();
 //    animate();
     function init() {
@@ -155,9 +168,11 @@
         renderer = new THREE.WebGLRenderer({//渲染器
             canvas: document.getElementById('example')//画布
             ,
-//            alpha: true,//设置场景透明
+            alpha: true,//设置场景透明
             antialias:true,//抗锯齿
+            preserveDrawingBuffer:true,
         });
+        renderer.setClearColor('#fff',1);
         /*//创建一个WebGL渲染器并设置其大小
         renderer = new THREE.WebGLRenderer();*/
 
@@ -178,7 +193,7 @@
         //在场景中添加坐标轴
         //X轴红色，Y轴绿色，Z轴蓝色。
         var axes = new THREE.AxesHelper(2000);
-        scene.add(axes);
+//        scene.add(axes);
 
         camera = new THREE.PerspectiveCamera( 30, 1, 0.1, 10000 );//透视摄影机
 //        camera.position.set(1300.0, 600.0, 1200.0);//相机位置
@@ -215,6 +230,12 @@
 
         controls.autoRotate = false;
 
+
+        /**
+         * 测试新版obj
+         * */
+        var testPath = "obj/machine/";
+        loadMTLOBJ(testPath,'m',testPath,'m','skjcM1_'+i,0,21,0,0,0,0);
         /***
          * 加载obj
          * @type {THREE.OBJLoader}
@@ -226,29 +247,43 @@
         var path = 'obj/skjc/';
         for(var i=0;i<=2;i++){
             if(i==0){
-                loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuangT1'+i,0,21,0,0,0,0);
-                loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuangT2'+i,0,21,140,0,0.5*Math.PI,0);
-                loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kaijuanji'+i,0,22,-140,0,0,0);
+                loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','skjcT1_'+i,0,21,0,0,0,0);
+                loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','skjcT2_'+i,0,21,140,0,0.5*Math.PI,0);
+                loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kjj_'+i,0,22,-140,0,0,0);
                 continue;
             }
-            loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuangi'+i,80*i,21,0,0,0,0);
-            loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuangi'+i,-80*i,21,0,0,0,0);
+            if(i==1) continue;
+            /*loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','skjcT1_'+i,80*i,21,0,0,0,0);
+            loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','skjcT1_--'+i,-80*i,21,0,0,0,0);
 
-            loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuangT2'+i,80*i,21,140,0,0.5*Math.PI,0);
-            loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuangT2'+i,-80*i,21,140,0,0.5*Math.PI,0);
+            loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','skjcT2_'+i,80*i,21,140,0,0.5*Math.PI,0);
+            loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','skjcT2_--'+i,-80*i,21,140,0,0.5*Math.PI,0);
 
-            loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kaijuanji'+i,80*i,22,-140,0,0,0);
-            loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kaijuanji'+i,-80*i,22,-140,0,0,0);
+            loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kjj_'+i,80*i,22,-140,0,0,0);
+            loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kjj_--'+i,-80*i,22,-140,0,0,0);*/
         }
+
         /*loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuang1',0,21,0,0,0,0);
         loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuang2',80,21,0,0,0,0);
         loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuang3',164,21,0,0,0,0);
         loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuang4',-80,21,0,0,0,0);
         loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','shukongjichuang5',-164,21,0,0,0,0);*/
 
+//        createCube(img,name,l,w,h,x,y,z,translateX,translateY,translateZ,rotationX,rotationY,rotationZ)
+        createCube('images/wall.png',"north",600,100,10, 0,50,-300, 0,0,0, 0,0,0);
+//        createCube('images/wall.png',"south",600,100,10, 0,50,300, 0,0,0, 0,0,0);
+        createCube('images/wall.png',"west",600,100,10, 300,50,0, 0,0,0, 0,0.5,0);
+        createCube('images/wall.png',"east",600,100,10, -300,50,0, 0,0,0, 0,0.5,0);
 
+        /**canvas文字背景*/
+//        testText();
+
+        /**文字背景 测试**/
+//        createTextPlane(80,50,'red',0,70,-5);
 
         createPlane(1200,1200,'images/caodi.jpg',0,0,5);
+
+//        createPlane(600,600,'images/tree.png',0,0,25,0.5,0.5,0.5);
         /**
          * 创建车间地面
          * */
@@ -256,7 +291,7 @@
         /**
          * 创建设备地面
          * */
-//        createPlane(80,80,'images/xian1.jpg',0,0,0);
+        createPlane(80,80,'images/xian1.jpg',0,0,0);
         for(var i=0;i<=3;i++){
             if(i==0){
                 createPlane(80,80,'images/xian1.jpg',0,0,0);
@@ -273,50 +308,8 @@
             createPlane(80,80,'images/xian1.jpg',82*i,-140,0);
             createPlane(80,80,'images/xian1.jpg',-82*i,-140,0);
         }
-        /*var geometry = new THREE.PlaneGeometry(600,600,1,1);
-        var  texture = new THREE.TextureLoader().load('images/wall.png');
-        //3 创建材质 里面加纹理 因为上面的纹理里面有图片 所以相当于在材质上面贴图片
-//有单面贴和两面贴 这里是里面贴 主注意括号里面的map，map里面放上面下载到的纹理（这里是图片）对象
-        var material  = new THREE.MeshBasicMaterial({map:texture,color:'0Xffffff',transparent:false});
-        material.side=THREE.DoubleSide;//单面贴就删除
 
-//4 创建网格平面 需要几何图形和材质
-        var mesh = new THREE.Mesh(geometry,material);
-//        mesh.rotation.x=0.5*Math.PI;
-//        mesh.rotation.z=0.5*Math.PI;
-        mesh.translateZ(0);
-        scene.add(mesh);//加入到场景*/
 
-//        loadMTLOBJ(mtlPath,mtl,objPath,obj,objName,X,Y,Z)
-        /*for(var i=0;i<15;i++){
-//            object.scale.set(0.1, 0.1, 0.1);//缩放
-//                        object.name = 'kaijuanji';
-            loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kaijuanji'+i,-300,i*100,200);
-        }*/
-
-        /*//TODO  后期处理测试中
-        window.addEventListener( 'touchmove', onTouchMove );
-
-        function onTouchMove( event ) {
-
-            var x, y;
-
-            if ( event.changedTouches ) {
-
-                x = event.changedTouches[ 0 ].pageX;
-                y = event.changedTouches[ 0 ].pageY;
-
-            } else {
-
-                x = event.clientX;
-                y = event.clientY;
-
-            }
-
-            mouse.x = ( x / window.innerWidth ) * 2 - 1;
-            mouse.y = - ( y / window.innerHeight ) * 2 + 1;
-
-        }*/
 
         //捕获模型
         raycaster = new THREE.Raycaster();
@@ -328,8 +321,10 @@
         /**
          *
          * */
-        createText('这是\n进行过\n测试的文字\nThreeJS',300,200,200);
-        createText_another();
+//        createText('这是\n进行过\n测试的文字\nThreeJS',300,200,200);
+//        createText_another('This is a createText_another \nFont text',0,100,100);
+
+//        createText('This is a createText \nFont text',200,100,100)
 //        createText_another();
         //TODO 测试
         //自适应
@@ -340,6 +335,16 @@
         //TODO 双击事件测试
         window.addEventListener( 'dblclick', onMouseDBClick, false );
 
+        var dragControls = new THREE.DragControls( selectedObjects, camera, renderer.domElement );
+        dragControls.addEventListener( 'dragstart', function () {
+            controls.enabled = false;
+        } );
+        dragControls.addEventListener( 'dragend', function () {
+            controls.enabled = true;
+        } );
+
+        //鼠标移动事件
+//        window.addEventListener( 'mousemove', onDocumentMouseMove, false );
         render();
 
     }
@@ -368,6 +373,11 @@
         //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        /**
+         * 获取点击的坐标
+         * */
+//        getCoordinate(mouse);
+
         // 通过鼠标点的位置和当前相机的矩阵计算出raycaster
         raycaster.setFromCamera( mouse, camera );
 
@@ -377,12 +387,39 @@
             //第一个符合条件的物体
             var getObj = intersects[0].object.parent;
             if(getObj instanceof THREE.Group){
+                setInputVal(getObj.position.x,getObj.position.y,getObj.position.z,getObj.name);
             }
             changeColor(intersects[0].object,'red');
 //            intersects[0].object.material[0].color.set( 'orange' );
 //            intersects[0].object.material[0].emissive.set( 'red' )
         }
     }
+    /**
+     * 获取鼠标点击的坐标
+     * */
+    function getCoordinate(mouse){
+        /**
+         * 获取坐标
+         * */
+        var vectorClick = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+        //这句将一个向量转成threejs坐标
+        vectorClick.unproject( camera );
+
+        var geometry = new THREE.PlaneGeometry(20,20,1,1);
+        var material  = new THREE.MeshBasicMaterial({color:'red',transparent:false});
+//        var material  = new THREE.MeshBasicMaterial({map:texture,transparent:true});
+        material.side=THREE.DoubleSide;//单面贴就删除
+
+//4 创建网格平面 需要几何图形和材质
+        var mesh_mouse = new THREE.Mesh(geometry,material);
+        mesh_mouse.position.copy(vectorClick);
+        console.log("mesh_mouse.position:  "+mesh_mouse.position);
+
+        document.getElementById("x").value = vectorClick.x;
+        document.getElementById("y").value = vectorClick.y;
+        document.getElementById("z").value = vectorClick.z;
+    }
+
     /**
      * 双击事件
      *
@@ -400,14 +437,24 @@
             var getObj = intersects[0].object.parent;
             if(getObj instanceof THREE.Group){
 //                alert('<div>');
-                setInputVal(getObj.position.x,getObj.position.y,getObj.position.z,getObj.name)
+                setInputVal(getObj.position.x,getObj.position.y,getObj.position.z,getObj.name);
+                if(onMouseDBClickFlag){
+                    window.open("Detail.html");
+                }
             }
 //            intersects[0].object.material[0].color.set( 'green' );
 //            intersects[0].object.material[0].color.setRGB(0.5887,0.5887,0.5887);
             resetColor(intersects[0].object);
 //            intersects[0].object.material[0].emissive.set( 'red' );
+
         }
     }
+
+    function onDocumentMouseMove( event ) {
+        mouseX = event.clientX - windowHalfX;
+        targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
+    }
+
     /**
      * 给input赋值
      * */
@@ -422,35 +469,48 @@
         i1.getElementById("Z").value = z;
         i1.getElementById("matoname").value = name;
     }
+
+    /**
+     * three js 刷新时间，暂时停用
+     * */
     function animate() {
+
         requestAnimationFrame( animate );
         render();
 
     }
-
+    /**
+     * 加载场景
+     * **/
     function render(){
+
+
         var  texture = new THREE.TextureLoader().load('images/caodi.jpg');
 //        texture.wrapS = THREE.RepeatWrapping;
 //        texture.wrapT = THREE.RepeatWrapping;
 
-
-        scene.traverse( function ( child ) {
-            if ( child instanceof THREE.Group ) {
-            }
-        } );
-
-        /*renderer.autoClear = false;
-        var delta = clock.getDelta();
-        controls.update(delta);*/
-
         renderer.render(scene, camera);//调用WebGLRenderer的render函数刷新场景
-        requestAnimationFrame(render);
-//        composer.render(delta);
+
+        /*//获取选中的设备
+        try {
+            var group = scene.getObjectByName("Text_skjcT1_0");
+//        group.rotation.y += ( targetRotation - group.rotation.y ) * 0.08;
+            group.rotation.y += 10;
+        } catch (e) {
+        }*/
+        requestAnimationFrame(render);/**自带刷新事件调用自己的方法**/
 
 
     }
 
     function loadMTLOBJ(mtlPath,mtl,objPath,obj,objName,X,Y,Z,rotationX,rotationY,rotationZ){
+        createText_another('Text_'+objName,X,Y+50,Z);
+        /**
+         * 创建文字的时候创建文字背景
+         * **/
+        createTextPlane(120,50,'Bg_Text_'+objName,0,0,-2,X,Y+50,Z);
+        /**放入文字对象的名称*/
+        textGroup.push('Text_'+objName);
         var mtlLoader = new THREE.MTLLoader();
 //        mtlLoader.setPath('obj/skjc/');
         mtlLoader.setPath(mtlPath);
@@ -463,7 +523,10 @@
             objLoader.setPath(objPath);
             objLoader.load(obj+'.obj', function (object) {
 //                        object.rotation.y = 0;
-                        object.scale.set(0.2,0.2,0.2);
+                        try {
+                            object.scale.set(0.2, 0.2, 0.2);
+                        } catch (e) {
+                        }
                         try {
                             object.rotation.set(rotationX, rotationY, rotationZ);
                         } catch (e) {
@@ -486,26 +549,80 @@
                     },
                     onProgress, onError);
         });
+        //清理threejs 缓存
+        clearThreeCache();
     }
     /**
      * 创建平面
      * */
-    function createPlane(w,h,img,translateX,translateY,translateZ){
+    function createPlane(w,h,img,translateX,translateY,translateZ,RX,RY,RZ){
         var geometry = new THREE.PlaneGeometry(w,h,1,1);
         var  texture = new THREE.TextureLoader().load(img);
         //3 创建材质 里面加纹理 因为上面的纹理里面有图片 所以相当于在材质上面贴图片
 //有单面贴和两面贴 这里是里面贴 主注意括号里面的map，map里面放上面下载到的纹理（这里是图片）对象
-        var material  = new THREE.MeshBasicMaterial({map:texture,color:'0Xffffff',transparent:false});
+//        var material  = new THREE.MeshBasicMaterial({map:texture,color:'0Xffffff',transparent:false});
+        var material  = new THREE.MeshBasicMaterial({map:texture,transparent:true});
         material.side=THREE.DoubleSide;//单面贴就删除
 
 //4 创建网格平面 需要几何图形和材质
         var mesh = new THREE.Mesh(geometry,material);
         mesh.rotation.x=0.5*Math.PI;
+        if(isNull(RX)){
+            mesh.rotation.x=Number(RX)*Math.PI;
+        }
+        if(isNull(RY)){
+            mesh.rotation.y=Number(RY)*Math.PI;
+        }
+        if(isNull(RZ)){
+            mesh.rotation.z=Number(RZ)*Math.PI;
+        }
 //        mesh.rotation.y=0.5*Math.PI;
         mesh.translateX(translateX);
         mesh.translateY(translateY);
         mesh.translateZ(translateZ);
         scene.add(mesh);//加入到场景
+
+        //清理threejs 缓存
+        clearThreeCache();
+    }
+    /**
+     * 创建矩形
+     * */
+    function createCube(img,name,l,w,h,x,y,z,translateX,translateY,translateZ,rotationX,rotationY,rotationZ){
+//        var img = 'images/wall.png';
+        var  texture = new THREE.TextureLoader().load(img);
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        var wrapS = l/128;
+        var wrapT = w/128;
+        console.log(wrapS+"  "+wrapT);
+        texture.repeat.set( wrapS, wrapT );
+//        texture.repeat.set( THREE.RepeatWrapping, THREE.RepeatWrapping );
+//        var geometry = new THREE.CubeGeometry(600, 50, 10);
+        var geometry = new THREE.CubeGeometry(l, w, h);
+        var material  = new THREE.MeshBasicMaterial({map:texture,transparent:false});
+//        material.side=THREE.DoubleSide;//单面贴就删除
+
+        /*var cube = new THREE.Mesh(new THREE.CubeGeometry(600, 50, 10), //形状の設定
+                new THREE.MeshLambertMaterial({
+//                    color : 0xff0000,
+                    map:texture,
+                    transparent:false,
+                }) //材質設定
+        );*/
+        var mesh = new THREE.Mesh(geometry,material);
+        scene.add(mesh);
+//        mesh.position.set(0, 0, -300);
+//        mesh.translateY(21);
+        mesh.position.set(x, y, z);
+        mesh.translateX(translateX);
+        mesh.translateY(translateY);
+        mesh.translateZ(translateZ);
+        mesh.rotation.set(Number(rotationX)*Math.PI,Number(rotationY)*Math.PI,Number(rotationZ)*Math.PI);
+        mesh.name = name;
+
+        //清理threejs 缓存
+        clearThreeCache();
     }
 
     function getJson(){
@@ -517,69 +634,56 @@
          * @type {any}
          */
         var obj = scene.getObjectByName ( 'kaijuanji' );
-        if(countNum % 2 ==0){
+        /*if(countNum % 2 ==0){
 //            obj.children[0].material[0].color.setRGB(0.5887,0.5887,0.5887);
             resetColor(obj);
         }else{
 //            obj.children[0].material[0].color.set( 'red' );
             changeColor(obj,'red');
+        }*/
+        switch(countNum){
+            case 3: changeColor(obj,'green');break;
+            case 1: changeColor(obj,'orange');break;
+            case 2: changeColor(obj,'red');break;
+            case 4: resetColor(obj);countNum=0; break;
+            default:break;
         }
     }
+
     /**
-     *
-     * 生成文字
-     * 方法2
-     */
-    function createText_another(){
-        var loader = new THREE.FontLoader();
-        //加载字体库，加载成功后将字体库传给回调函数；
-        loader.load('fonts/Microsoft YaHei_Regular.json',function(response) {
-            var font = response;
-            /*创建字体几何图形，其中TextGeometry的第一个参数是需要绘制的文本，第二个参数是一个json对象，设置如何绘制文本，具体意义为：
-             font: 使用的字体库；
-             size:绘制字体的大小；
-             height:绘制文本的厚度；
-             bevelEnabled：是否允许棱角平滑过渡；
-             bevelSize:棱角平滑过渡的尺寸；*/
-            //注意:bevelSize通常要比size和height小一个量级，过渡带就会很饱满甚至比文本主体本身还要大
+     * 创建文字背景平面
+     * */
+    function createTextPlane(w,h,planeName,translateX,translateY,translateZ,x,y,z){
+        var geometry = new THREE.PlaneGeometry(w,h,1,1);
 
+        var img = 'images/text_bg_final.png';
+        var  texture = new THREE.TextureLoader().load(img);
+        //3 创建材质 里面加纹理 因为上面的纹理里面有图片 所以相当于在材质上面贴图片
+//有单面贴和两面贴 这里是里面贴 主注意括号里面的map，map里面放上面下载到的纹理（这里是图片）对象
+        var material  = new THREE.MeshBasicMaterial({map:texture,transparent:true,});
+//        var material  = new THREE.MeshBasicMaterial({map:texture,transparent:false});
+        material.side=THREE.DoubleSide;//单面贴就删除
 
-            var textGeometry = new THREE.TextGeometry("学习Three.js", {
-                "font": font,
-                "size": 70,
-                "height": 20,
-                "bevelEnabled": true,
-                "bevelSize": 2
-            })
-
-            /*在3D世界里所有的物体都是由网格构成的，在three.js中，绘制图形的步骤是：
-             先使用geometry定义图形的几何形状，然后使用几何形状和材质构建网格;*/
-
-            /*这里使用材质数组来对网格进行修饰，材质数组的第一项修饰文字正面和背面，
-             第二项修饰文字的侧面即顶部和底部。使用的两个材质都是MeshPhongMaterial,这种材质的特点是能够像塑料一样反光。*/
-            text = new THREE.Mesh(textGeometry, new THREE.MultiMaterial([
-                new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading}),
-                new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.SmoothShading})
-            ]))
-            textGeometry.computeBoundingBox();
-
-            var centerOffset = -0.5 * (textGeometry.boundingBox.max.x-textGeometry.boundingBox.min.x);
-            text.position.x = centerOffset;
-            text.position.y = 30;
-
-            scene.add(text);
-            var plane = new THREE.Mesh(
-                    new THREE.PlaneBufferGeometry( 10000, 10000 ),
-                    new THREE.MeshBasicMaterial( { color: 0xfffffff, opacity: 0.5, transparent: true } )
-            );
-            plane.rotation.x = -Math.PI/2;
-            plane.position.y = 0;
-//            scene.add(plane);
-
-            });
-
+//4 创建网格平面 需要几何图形和材质
+        var mesh = new THREE.Mesh(geometry,material);
+//        mesh.rotation.x=0.5*Math.PI;
+        try {
+            mesh.position.x = x;
+            mesh.position.y = y;
+            mesh.position.z = z;
+        } catch (e) {
         }
 
+        mesh.translateX(translateX);
+        mesh.translateY(translateY);
+        mesh.translateZ(translateZ);
+        mesh.name = planeName;
+//        textObj.name = msg;
+        scene.add(mesh);//加入到场景
+
+        //清理threejs 缓存
+        clearThreeCache();
+    }
     /**
      * 生成文字
      * @param msg  文字
@@ -591,8 +695,8 @@
         //引入文字
         var loader = new THREE.FontLoader();
 //        loader.load( '../three.js-master/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
-//        loader.load( '../three.js-master/examples/fonts/optimer_regular.typeface.json', function ( font ) {
-        loader.load( 'fonts/Microsoft YaHei_Regular.json', function ( font ) {
+        loader.load( '../three.js-master/examples/fonts/optimer_regular.typeface.json', function ( font ) {
+//        loader.load( 'fonts/Microsoft YaHei_Regular.json', function ( font ) {
 //        loader.load( '../three.js-master/examples/fonts/gentilis_regular.typeface.json', function ( font ) {
 //        loader.load( '../three.js-master/examples/fonts/gentilis_bold.typeface.json', function ( font ) {
 
@@ -621,7 +725,7 @@
             var message = msg;
 
             //控制字体大小和内容
-            var shapes = font.generateShapes( message, 20 );
+            var shapes = font.generateShapes( message, 12 );
 
             var geometry = new THREE.ShapeGeometry( shapes );
 
@@ -638,8 +742,8 @@
 
             text = new THREE.Mesh( textShape, matLite );
             /*text.position.x = x;
-            text.position.y = y;
-            text.position.z = z;*/
+             text.position.y = y;
+             text.position.z = z;*/
             text.position.set( x, y, z );
 //            textMesh.position.set( 50, 100, 50 );
 //            textMesh.rotation.x = -Math.PI / 4;
@@ -654,33 +758,43 @@
     fontLoader.load('../three.js-master/examples/fonts/helvetiker_regular.typeface.json', function(response) {
         fontCache = response;
     });
-    function createText_another() {
+
+    /**
+     * 创建文字
+     * 目前使用的是这个
+     * */
+    function createText_another(msg,x,y,z) {
         var text = new THREE.FontLoader().load('../three.js-master/examples/fonts/helvetiker_regular.typeface.json', function(text) {
-            var gem = new THREE.TextGeometry('This is a test\nFont text', {
-                size: 20, //字号大小，一般为大写字母的高度
-                height: 1, //文字的厚度
+//            var gem = new THREE.TextGeometry('This is a test\nFont text', {
+            var gem = new THREE.TextGeometry(msg, {
+                size: 6, //字号大小，一般为大写字母的高度
+                height: 0.01, //文字的厚度
                 weight: 'normal', //值为'normal'或'bold'，表示是否加粗
                 font: text, //字体，默认是'helvetiker'，需对应引用的字体文件
                 style: 'normal', //值为'normal'或'italics'，表示是否斜体
                 bevelThickness: 1, //倒角厚度
                 bevelSize: 1, //倒角宽度
                 curveSegments: 30,//弧线分段数，使得文字的曲线更加光滑
-                bevelEnabled: true, //布尔值，是否使用倒角，意为在边缘处斜切
+                bevelEnabled: false, //布尔值，是否使用倒角，意为在边缘处斜切
             });
             gem.center();
             var mat = new THREE.MeshPhongMaterial({
                 color: 0xffe502,
                 specular: 0x009900,
-                shininess: 30,
-                shading: THREE.FlatShading
+                shininess: 1,
+//                shading: THREE.FlatShading
+                flatShading:false,
             });
             var textObj = new THREE.Mesh(gem, mat);
-            textObj.position.set( 0, 250, 0 );
-            textObj.castShadow = true;
-            textObj.name = "text";
+//            textObj.position.set( 0, 250, 0 );
+            textObj.position.set( x, y, z );
+            textObj.castShadow = false;
+            textObj.name = msg;
             scene.add(textObj);
 //            new TWEEN.Tween(textObj.rotation).to({y: Math.PI * 2}, 2000).repeat(Infinity).yoyo(true).start();
         });
+        //清理threejs 缓存
+        clearThreeCache();
     }
     /**
      * 改变颜色
@@ -701,6 +815,8 @@
         } catch (e) {
             console.log("changeColor() error !!!");
         }
+        //清理threejs 缓存
+        clearThreeCache();
     }
     /**
      * 重置颜色
@@ -708,16 +824,23 @@
      */
     //TODO 如果有不同的模型，需要 测试 方法是否需要改变
     function resetColor(obj) {
-        obj.traverse( function ( child ) {
-            if (child instanceof THREE.Mesh) {
-                child.material.needsUpdate = true;
-                for(var i=0;i<child.material.length;i++){
-                    child.material[i].color.setRGB(0.5887,0.5887,0.5887);
+        try {
+            obj.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.material.needsUpdate = true;
+                    for (var i = 0; i < child.material.length; i++) {
+                        child.material[i].color.setRGB(0.5887, 0.5887, 0.5887);
+                    }
                 }
-            }
-        });
+            });
+        } catch (e) {
+            console.log("resetColor error!");
+        }
+        //清理threejs 缓存
+        clearThreeCache();
     }
     //TODO 测试 点击事件
+    //保存按钮
     function image_change_save(){
         /*//获取选中的设备
         var matoname = document.getElementById('matoname').value;
@@ -728,27 +851,95 @@
 
         //根据iframe的id获取对象  
         var i1 = window.frames['iframe'].contentDocument;
+        changeObj(i1);
+    }
+    /**
+     * 改变模型的位置
+     * */
+    function changeObj(i1){
         //获取选中的设备
         var matoname = i1.getElementById('matoname').value;
         var obj = scene.getObjectByName (matoname);
+        //旋转角度
+        var rotation = i1.getElementById("rotation").value;
         obj.position.x = i1.getElementById('X').value;
         obj.position.y = i1.getElementById('Y').value;
         obj.position.z = i1.getElementById('Z').value;
-        var w = i1.getElementById('W').value;
+
+        if(isNull(rotation)){
+            try {
+                obj.rotation.set(0, rotation*Math.PI, 0);//缩放*/
+            } catch (e) {
+            }
+        }
+        /*var w = i1.getElementById('W').value;
         var h = i1.getElementById('H').value;
         var l = i1.getElementById('L').value;
 //        obj.scale.set(isNull(w), isNull(h), isNull(l));//缩放
-        obj.scale.set(isNull(w,obj.scale.x), isNull(h,obj.scale.y), isNull(l,obj.scale.z));//缩放
-        /*obj.scale.x = isNull(w);
-        obj.scale.y = isNull(h);
-        obj.scale.z = isNull(l);*/
+        obj.scale.set(isNull(w,obj.scale.x), isNull(h,obj.scale.y), isNull(l,obj.scale.z));//缩放*/
+
+        changeTextStyle(i1);
+        //清理threejs 缓存
+        clearThreeCache();
     }
     /**
-     *
+     * 改变模型名字的位置
      * */
-    function isNull(val,local){
-        if(val==null || typeof val=="" || val==""){
-            return local;
+    function changeTextStyle(i1){
+        //获取选中的设备
+        var matoname = i1.getElementById('matoname').value;
+        var obj = scene.getObjectByName ("Text_"+matoname);
+
+        try {
+            var x = Number(i1.getElementById('X').value);
+            var y = Number(i1.getElementById('Y').value)+50;
+            var z = Number(i1.getElementById('Z').value);
+            obj.position.x = x;
+            obj.position.y = y;
+            obj.position.z = z;
+        } catch (e) {
+            console.log("设置文字坐标出错");
+        }
+//        obj.position.set(i1.getElementById('X').value,i1.getElementById('Y').value+21,i1.getElementById('Z').value);
+
+        obj.geometry.needsUpdate = true;
+        obj.geometry.normalsNeedUpdate = true;
+//改变文字背景的位置
+        changeBgTextStyle(i1);
+        //清理threejs 缓存
+        clearThreeCache();
+    }
+    /**
+     * 改变文字背景的位置
+     * */
+    function changeBgTextStyle(i1){
+        //获取选中的设备
+        var matoname = i1.getElementById('matoname').value;
+        var obj = scene.getObjectByName ("Bg_Text_"+matoname);
+
+        try {
+            var x = Number(i1.getElementById('X').value);
+            var y = Number(i1.getElementById('Y').value)+50;
+            var z = Number(i1.getElementById('Z').value)-2;
+            obj.position.x = x;
+            obj.position.y = y;
+            obj.position.z = z;
+        } catch (e) {
+            console.log("设置文字背景坐标出错");
+        }
+//        obj.position.set(i1.getElementById('X').value,i1.getElementById('Y').value+21,i1.getElementById('Z').value);
+
+        obj.geometry.needsUpdate = true;
+        obj.geometry.normalsNeedUpdate = true;
+        //清理threejs 缓存
+        clearThreeCache();
+    }
+    /**
+     * 判断是否为空
+     * */
+    function isNull(val){
+        if(val==null || typeof val=="undefined" || val==""){
+            return false;
         }
         return val;
     }
@@ -756,17 +947,90 @@
      * 添加按钮
      * */
     function add_machine(){
+        //根据iframe的id获取对象  
+        var i1 = window.frames['iframe'].contentDocument;
+        //var iframe =window.frames[0];也可以  
+        // 获取iframe中的元素值  
+        //var val=i1.getElementById("X").value;
+        var val = i1.getElementById("iframe_sel").value;
+        var timestamp=new Date().getTime();
         var path = 'obj/skjc/';
-        loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuangAdd',300,21,140,0,0.5*Math.PI,0);
-        changeText();
+        var rotation = i1.getElementById("rotation").value;
+        if(isNull(rotation)){
+            rotation = 0.5;
+        }
+//        loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuangAdd',300,21,140,0,0.5*Math.PI,0);
+//        loadMTLOBJ(path,val,path,val,val+timestamp,0,21,0,0,rotation*Math.PI,0);
+        loadMTLOBJ(path,val,path,val,timestamp.toString(),0,21,0,0,rotation*Math.PI,0);
+//        changeText();
+        //清理threejs 缓存
+        clearThreeCache();
+    }
+    /**
+     * 移除设备
+     * */
+    function removeObj(){
+        //根据iframe的id获取对象  
+        var i1 = window.frames['iframe'].contentDocument;
+        //var iframe =window.frames[0];也可以  
+        // 获取iframe中的元素值  
+        //var val=i1.getElementById("X").value;
+        var matoname = i1.getElementById("matoname").value;
+        var obj = scene.getObjectByName (matoname);
+        var obj_Text = scene.getObjectByName ("Text_"+matoname);
+        var obj_Bg_Text = scene.getObjectByName ("Bg_Text_"+matoname);
+        scene.remove(obj);
+        scene.remove(obj_Text);
+        scene.remove(obj_Bg_Text);
+        //清理threejs 缓存
+        clearThreeCache();
+    }
+    /**
+     * 移除文字
+     * 移除所有文字
+     * */
+    function removeText(){
+        var children_to_remove = [];
+        scene.traverse(function(child){
+            if(child.name.toString().indexOf("Text_") > -1){
+                children_to_remove.push(child);
+            }
+        });
+
+        children_to_remove.forEach(function(child){
+            try {
+                scene.remove(child);
+                isRemoveTextGroup.push(child);
+            } catch (e) {
+                console.log("移除对象出错！！！");
+            }
+        });
+        //清理threejs 缓存
+        clearThreeCache();
+//        scene.children.forEach(child => child.name.toString().indexOf("Text_") ? scene.remove(child) : null)
+    }
+    /**
+     * 清理threejs 缓存
+     * */
+    function clearThreeCache(){
+        THREE.Cache.clear();
+    }
+    /**
+     * 显示已经移除的文字对象
+     * */
+    function showText(){
+        isRemoveTextGroup.forEach(function(child){
+            scene.add(child);
+        });
+        isRemoveTextGroup = [];
     }
     /**
      * 修改文字
      * */
-    function changeText(){
-        var obj = scene.getObjectByName ("text");
+    function changeText(msg){
+        var obj = scene.getObjectByName("textTest");
         scene.remove(obj);
-        var gem = new THREE.TextGeometry('This is a change \nFont text', {
+        var gem = new THREE.TextGeometry(msg, {
             size: 20, //字号大小，一般为大写字母的高度
             height: 1, //文字的厚度
             weight: 'normal', //值为'normal'或'bold'，表示是否加粗
@@ -794,7 +1058,13 @@
 
         obj.geometry.needsUpdate = true;
         obj.geometry.normalsNeedUpdate = true;
+        //清理threejs 缓存
+        clearThreeCache();
     }
+
+
+
+
 </script>
 </body>
 </html>
