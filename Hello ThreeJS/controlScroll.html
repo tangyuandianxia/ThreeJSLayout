@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scrollControl</title>
+</head>
+<body>
+<div style='height:4320px;'>
+    <div id='d1' style='height:200px;width:1300px;overflow:auto;background:blue;'>
+        <!--<div style='height:1500px;width:500px;background:yellow'>2222</div>-->
+        1
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:red'>
+        2
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:orange;'>
+        3
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:yellow;'>
+        4
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:green;'>
+        5
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:saddlebrown;'>
+        6
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:blue;'>
+        7
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:violet;'>
+        8
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:blue;'>
+        9
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:orange;'>
+        10
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:yellow;'>
+        11
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:green;'>
+        12
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:saddlebrown;'>
+        13
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:blue;'>
+        14
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:violet;'>
+        15
+    </div>
+    <div style='height:200px;width:1300px;overflow:auto;background:blue;'>
+        16
+    </div>
+</div>
+<script>
+    //JS控制滚动条的位置：
+    //window.scrollTo(x,y);
+    //竖向滚动条置顶(window.scrollTo(0,0);
+    //竖向滚动条置底 window.scrollTo(0,document.body.scrollHeight)
+
+    var width = 0;
+    id = setInterval(changeScroll, 3000);
+
+    function changeScroll(){
+        console.log(" document.documentElement.scrollTop;  "+ document.documentElement.scrollTop +" document.body.clientHeight :"+document.body.clientHeight);
+        //针对div内部的scroll滚动条的位置变换
+//        document.getElementById('d1').scrollTop +=100;//通过scrollTop设置滚动到100位置
+
+        console.log("getScrollTop() "+getScrollTop()+"getWindowHeight() "+getWindowHeight()+"getScrollHeight() "+getScrollHeight());
+        //判断是否到底部
+        // pan duan shi fou dao di dibu
+        if(getScrollTop() + getWindowHeight() == getScrollHeight()){
+            //竖向滚动条置顶(
+            //gun dong tiao  zhi ding
+            window.scrollTo(0,0);
+            //竖向滚动条置底
+            //gun dong tiao  zhi di
+            //window.scrollTo(0,document.body.scrollHeight);
+            //滚动条回到顶部，重置距离为0；
+            //gun dong tiao hui dao ding bu , quan ju bian liang chong zhi wei 0
+            width = 0;
+        }else{
+            //滚动条 往下 滚动
+            window.scrollTo(0, width += getWindowHeight());
+        }
+
+    }
+    /***
+     * 获取滚动条 距离初始位置的距离
+     * 不包括滚动条的大小
+     * @returns {number}
+     */
+    function getScrollTop(){
+        var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+        if(document.body){
+            bodyScrollTop = document.body.scrollTop;
+        }
+        if(document.documentElement){
+            documentScrollTop = document.documentElement.scrollTop;
+        }
+        scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+        return scrollTop;
+    }
+    //文档的总高度
+    function getScrollHeight(){
+        var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+        if(document.body){
+            bodyScrollHeight = document.body.scrollHeight;
+        }
+        if(document.documentElement){
+            documentScrollHeight = document.documentElement.scrollHeight;
+        }
+        scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+        return scrollHeight;
+    }
+    function getWindowHeight(){
+        var windowHeight = 0;
+        if(document.compatMode == "CSS1Compat"){
+            windowHeight = document.documentElement.clientHeight;
+        }else{
+            windowHeight = document.body.clientHeight;
+        }
+        return windowHeight;
+    }
+    //监听滚动条事件
+    window.onscroll = function(){
+        if(getScrollTop() + getWindowHeight() == getScrollHeight()){
+//            alert("已经到最底部了！!");
+            console.log("已经到最底部了！!");
+        }
+    };
+</script>
+</body>
+</html>
