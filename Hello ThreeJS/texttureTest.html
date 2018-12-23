@@ -31,7 +31,7 @@
 
         #glFullscreen {
             width: 100%;
-            height: 100vh;
+            height: 90vh;
             min-width: 640px;
             min-height: 360px;
             position: relative;
@@ -56,9 +56,6 @@
             z-index: 1 !important; /* FIX DAT.GUI */
         }
     </style>
-    <style>
-        /*.dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1!important}.dg.main .close-button.drag,.dg.main:hover .close-button{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;transition:opacity .1s linear;border:0;position:absolute;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-x:hidden}.dg.a.has-save>ul{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{position:fixed;top:0;z-index:1002}.dg li{-webkit-transition:height .1s ease-out;transition:height .1s ease-out}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;overflow:hidden;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid transparent}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:9px}.dg .c select{margin-top:5px}.dg .cr.boolean,.dg .cr.boolean *,.dg .cr.function,.dg .cr.function *,.dg .cr.function .property-name{cursor:pointer}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco,monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px Lucida Grande,sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid hsla(0,0%,100%,.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2fa1d6}.dg .cr.number input[type=text]{color:#2fa1d6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.boolean:hover,.dg .cr.function:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2fa1d6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}*/
-    </style>
     <script src="../three.js-master/examples/js/libs/dat.gui.min.js"></script>
 </head>
 <body>
@@ -75,6 +72,7 @@
 <script src="../three.js-master/examples/js/controls/TrackballControls.js"></script>
 <script src="../three.js-master/examples/js/controls/OrbitControls.js"></script>
 
+<script src="../three.js-master/examples/js/controls/DragControls.js"></script>
 
 <script src="../three.js-master/examples/js/shaders/CopyShader.js"></script>
 <script src="../three.js-master/examples/js/shaders/FXAAShader.js"></script>
@@ -97,29 +95,10 @@
 <script type="text/javascript" src="../three.js-master/examples/js/postprocessing/SavePass.js"></script>
 <script type="text/javascript" src="../three.js-master/examples/js/postprocessing/TexturePass.js"></script>
 
-<!--<div id="info">
-    <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - OBJLoader2 direct loader test
-    <input value="test">
-    <div id="feedback"></div>
-</div>-->
-<!--<div class="dg ac">
-    <div class="dg main a" style="width: 300px;">
-        <ul>
-            <li class="cr number has-slider">
-                <div>
-                    <div class="c">
-                        <div>
-                            <input type="text">
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
 
-    </div>
-</div>-->
-
-<div style="position:absolute;left: 150px;top: 20px;height: 45px;width: 230px;z-index:300;">
+<!--<script type="text/javascript" src="jquery.min.js"></script>-->
+<iframe src="iframe.html" id="iframe" scrolling="no" frameborder="0" width="100%" height="45px" ></iframe>
+<!--<div style="position:absolute;left: 150px;top: 20px;height: 45px;width: 230px;z-index:300;">
     <font id="mtao_name" class="setStyle">机床名:</font>
     <input type="text" value="" id="matoname" style="width: 150px;z-index:800;">
 </div>
@@ -174,11 +153,15 @@
 <button type="button" class="btn btn-default" onclick="add_machine()" name="添加设备"
         style="position:absolute;left:1030px;top: 17px;z-index:200;">
     添加设备
-</button>
+</button>-->
 <div id="glFullscreen">
     <canvas id="example"></canvas>
 
 </div>
+
+<!-- 作为Three.js渲染器输出元素 -->
+<!--<div id="WebGL-output" style="border: solid thin red;">
+</div>-->
 <script type="text/javascript">
     var container, stats;
     var camera, scene, renderer;
@@ -198,7 +181,7 @@
 
     var OBJFlag = true;
 
-    var clock;
+//    var clock;
     var controls;
     var raycaster = null;
     var mouse = new THREE.Vector2(), INTERSECTED;
@@ -206,8 +189,8 @@
     var countNum = 0;
     id = setInterval(getJson, 5000);//每隔20s重绘一次
 
-
-    var params = {
+    var DragControls;
+    /*var params = {
         edgeStrength: 3.0,
         edgeGlow: 0.0,
         edgeThickness: 1.0,
@@ -221,7 +204,7 @@
         this.z = 0;
     }
     var gui = new dat.GUI( { width: 300 } );
-    gui.add( params, 'rotate' );
+    gui.add( params, 'rotate' );*/
 //    gui.add( paramsControls, 'zuobiao', -1000, 1000 );
 
     init();
@@ -243,13 +226,19 @@
         renderer = new THREE.WebGLRenderer({//渲染器
             canvas: document.getElementById('example')//画布
             ,
-            alpha: true,//设置场景透明
+//            alpha: true,//设置场景透明
             antialias:true,//抗锯齿
         });
+        /*//创建一个WebGL渲染器并设置其大小
+        renderer = new THREE.WebGLRenderer();*/
+
         renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(window.innerWidth, window.innerHeight-50);
         var width = window.innerWidth;
-        var height = window.innerHeight;
+        var height = window.innerHeight-50;
+
+/*//将渲染的结果输出到指定页面元素中
+        document.getElementById("WebGL-output").appendChild(renderer.domElement);*/
 
         scene = new THREE.Scene();//创建场景
 
@@ -296,8 +285,18 @@
 
 
         controls.autoRotate = false;
+
+        /*DragControls = new THREE.TrackballControls( camera );
+        DragControls.rotateSpeed = 1.0;
+        DragControls.zoomSpeed = 1.2;
+        DragControls.panSpeed = 0.8;
+        DragControls.noZoom = false;
+        DragControls.noPan = false;
+        DragControls.staticMoving = true;
+        DragControls.dynamicDampingFactor = 0.3;*/
+
         //使用 掩膜需要的
-        clock = new THREE.Clock();
+//        clock = new THREE.Clock();
 
         /*var material = new THREE.MeshPhongMaterial({
 //            color: 'green',
@@ -320,8 +319,11 @@
         loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuang2',300,100,200);
         loadMTLOBJ(path,'kaijuanji',path,'kaijuanji','kaijuanji',-300,110,200);
 
-        //TODO  后期处理测试中
-//        window.addEventListener( 'touchmove', onTouchMove );
+        for(var i=0;i<20;i++){
+            loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuang2',300,i*50,200);
+        }
+        /*//TODO  后期处理测试中
+        window.addEventListener( 'touchmove', onTouchMove );
 
         function onTouchMove( event ) {
 
@@ -342,7 +344,7 @@
             mouse.x = ( x / window.innerWidth ) * 2 - 1;
             mouse.y = - ( y / window.innerHeight ) * 2 + 1;
 
-        }
+        }*/
 
         //捕获模型
         raycaster = new THREE.Raycaster();
@@ -351,9 +353,12 @@
 //            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 //            document.addEventListener( 'mousemove', onMouseMove, false );
 //            id = setInterval(draw, 20);//每隔20s重绘一次
-        createText('这是进行过测试的文字ThreeJS',300,100,200);
-
+        /**
+         *
+         * */
+        createText('这是\n进行过\n测试的文字\nThreeJS',300,200,200);
         createText_another();
+//        createText_another();
         //TODO 测试
         //自适应
         window.addEventListener( 'resize', onWindowResize, false );
@@ -363,6 +368,9 @@
         //TODO 双击事件测试
         window.addEventListener( 'dblclick', onMouseDBClick, false );
 
+//        var dragControls = new THREE.DragControls( selectedObjects, camera, renderer.domElement );
+//        dragControls.addEventListener( 'dragstart', function ( event ) { DragControls.enabled = false; } );
+//        dragControls.addEventListener( 'dragend', function ( event ) { DragControls.enabled = true; } );
         render();
 
     }
@@ -384,6 +392,9 @@
         camera.updateProjectionMatrix();
         renderer.setSize( width, height );
     }
+    /**
+     * 单击事件
+     * */
     function onMouseClick( event ) {
         //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -397,28 +408,21 @@
             //第一个符合条件的物体
             var getObj = intersects[0].object.parent;
             if(getObj instanceof THREE.Group){
-                document.getElementById('X').value = getObj.position.x;
+                /*document.getElementById('X').value = getObj.position.x;
                 document.getElementById('Y').value = getObj.position.y;
                 document.getElementById('Z').value = getObj.position.z;
 
-                document.getElementById('matoname').value = getObj.name;
+                document.getElementById('matoname').value = getObj.name;*/
             }
-//            intersects[0].object.material[0].color.set( 'red' );
-//            intersects[0].object.material[0].color.set( 'green' );
-
-            /*intersects[0].object.traverse( function ( child ) {
-                if (child instanceof THREE.Mesh) {
-                    child.material.needsUpdate = true;
-                    for(var i=0;i<child.material.length;i++){
-                        child.material[i].color.set( 'green' );
-                    }
-                }
-            });*/
             changeColor(intersects[0].object,'red');
 //            intersects[0].object.material[0].color.set( 'orange' );
 //            intersects[0].object.material[0].emissive.set( 'red' )
         }
     }
+    /**
+     * 双击事件
+     *
+     * */
     function onMouseDBClick( event ) {
         //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -431,11 +435,8 @@
             //第一个符合条件的物体
             var getObj = intersects[0].object.parent;
             if(getObj instanceof THREE.Group){
-                document.getElementById('X').value = getObj.position.x;
-                document.getElementById('Y').value = getObj.position.y;
-                document.getElementById('Z').value = getObj.position.z;
-
-                document.getElementById('matoname').value = getObj.name;
+//                alert('<div>');
+                setInputVal(getObj.position.x,getObj.position.y,getObj.position.z,getObj.name)
             }
 //            intersects[0].object.material[0].color.set( 'green' );
 //            intersects[0].object.material[0].color.setRGB(0.5887,0.5887,0.5887);
@@ -451,13 +452,27 @@
 //            intersects[0].object.material[0].emissive.set( 'red' );
         }
     }
+    /**
+     * 给input赋值
+     * */
+    function setInputVal(x,y,z,name){
+        //根据iframe的id获取对象  
+        var i1 = window.frames['iframe'].contentDocument;
+        //var iframe =window.frames[0];也可以  
+        // 获取iframe中的元素值  
+        //var val=i1.getElementById("X").value;
+        i1.getElementById("X").value = x;
+        i1.getElementById("Y").value = y;
+        i1.getElementById("Z").value = z;
+        i1.getElementById("matoname").value = name;
+    }
     function animate() {
         requestAnimationFrame( animate );
         render();
 
     }
 
-    function render(){4
+    function render(){
         var  texture = new THREE.TextureLoader().load('images/caodi.jpg');
 //        texture.wrapS = THREE.RepeatWrapping;
 //        texture.wrapT = THREE.RepeatWrapping;
@@ -499,6 +514,8 @@
 //                        object.name = 'kaijuanji';
                         object.name = objName;
                         meshObj = object;
+
+                        selectedObjects.push(object);
 
                         /*var boxhelper=new THREE.BoxHelper(object);
                         scene.add(boxhelper);*/
@@ -635,7 +652,7 @@
             geometry.translate( xMid, 100, 0 );
 
             // make shape ( N.B. edge view not visible )
-
+            geometry.center();
             textShape.fromGeometry( geometry );
 
             text = new THREE.Mesh( textShape, matLite );
@@ -650,27 +667,65 @@
 
         } ); //end load function
     }
+    // 创建文字
+    var fontCache = null;
+    var fontLoader = new THREE.FontLoader();
+    fontLoader.load('../three.js-master/examples/fonts/helvetiker_regular.typeface.json', function(response) {
+        fontCache = response;
+    });
+    function createText_another() {
+        var text = new THREE.FontLoader().load('../three.js-master/examples/fonts/helvetiker_regular.typeface.json', function(text) {
+            var gem = new THREE.TextGeometry('This is a test\nFont text', {
+                size: 20, //字号大小，一般为大写字母的高度
+                height: 1, //文字的厚度
+                weight: 'normal', //值为'normal'或'bold'，表示是否加粗
+                font: text, //字体，默认是'helvetiker'，需对应引用的字体文件
+                style: 'normal', //值为'normal'或'italics'，表示是否斜体
+                bevelThickness: 1, //倒角厚度
+                bevelSize: 1, //倒角宽度
+                curveSegments: 30,//弧线分段数，使得文字的曲线更加光滑
+                bevelEnabled: true, //布尔值，是否使用倒角，意为在边缘处斜切
+            });
+            gem.center();
+            var mat = new THREE.MeshPhongMaterial({
+                color: 0xffe502,
+                specular: 0x009900,
+                shininess: 30,
+                shading: THREE.FlatShading
+            });
+            var textObj = new THREE.Mesh(gem, mat);
+            textObj.position.set( 0, 250, 0 );
+            textObj.castShadow = true;
+            textObj.name = "text";
+            scene.add(textObj);
+//            new TWEEN.Tween(textObj.rotation).to({y: Math.PI * 2}, 2000).repeat(Infinity).yoyo(true).start();
+        });
+    }
     /**
      * 改变颜色
      * @param obj
      * @param color
      */
     function changeColor(obj,color) {
-        obj.traverse( function ( child ) {
-            if (child instanceof THREE.Mesh) {
-                child.material.needsUpdate = true;
-                for(var i=0;i<child.material.length;i++){
-//                    child.material[i].color.set( 'red' );
-                    child.material[i].color.set( color );
+        try {
+            obj.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.material.needsUpdate = true;
+                    for (var i = 0; i < child.material.length; i++) {
+    //                    child.material[i].color.set( 'red' );
+                        child.material[i].color.set(color);
+                    }
                 }
-            }
-        });
+            });
+        } catch (e) {
+            console.log("changeColor() error !!!");
+        }
     }
     /**
      * 重置颜色
      * @param obj
      */
-    //TODO 如果有不同的模型，需要测试方法是否需要改变
+    //TODO 如果有不同的模型，需要 测试 方法是否需要改变
     function resetColor(obj) {
         obj.traverse( function ( child ) {
             if (child instanceof THREE.Mesh) {
@@ -683,16 +738,80 @@
     }
     //TODO 测试 点击事件
     function image_change_save(){
-        //获取选中的设备
+        /*//获取选中的设备
         var matoname = document.getElementById('matoname').value;
         var obj = scene.getObjectByName (matoname);
         obj.position.x = document.getElementById('X').value;
         obj.position.y = document.getElementById('Y').value;
-        obj.position.z = document.getElementById('Z').value;
+        obj.position.z = document.getElementById('Z').value;*/
+
+        //根据iframe的id获取对象  
+        var i1 = window.frames['iframe'].contentDocument;
+        //获取选中的设备
+        var matoname = i1.getElementById('matoname').value;
+        var obj = scene.getObjectByName (matoname);
+        obj.position.x = i1.getElementById('X').value;
+        obj.position.y = i1.getElementById('Y').value;
+        obj.position.z = i1.getElementById('Z').value;
+        var w = i1.getElementById('W').value;
+        var h = i1.getElementById('H').value;
+        var l = i1.getElementById('L').value;
+//        obj.scale.set(isNull(w), isNull(h), isNull(l));//缩放
+        obj.scale.set(isNull(w,obj.scale.x), isNull(h,obj.scale.y), isNull(l,obj.scale.z));//缩放
+        /*obj.scale.x = isNull(w);
+        obj.scale.y = isNull(h);
+        obj.scale.z = isNull(l);*/
     }
+    /**
+     *
+     * */
+    function isNull(val,local){
+        if(val==null || typeof val=="" || val==""){
+            return local;
+        }
+        return val;
+    }
+    /**
+     * 添加按钮
+     * */
     function add_machine(){
         var path = 'obj/skjc/';
-        loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuang2',500,100,200);
+        loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','shukongjichuangAdd',500,400,200);
+        changeText();
+    }
+    /**
+     * 修改文字
+     * */
+    function changeText(){
+        var obj = scene.getObjectByName ("text");
+        var gem = new THREE.TextGeometry('This is a test\nFont text', {
+            size: 20, //字号大小，一般为大写字母的高度
+            height: 1, //文字的厚度
+            weight: 'normal', //值为'normal'或'bold'，表示是否加粗
+            font: fontCache, //字体，默认是'helvetiker'，需对应引用的字体文件
+            style: 'normal', //值为'normal'或'italics'，表示是否斜体
+            bevelThickness: 1, //倒角厚度
+            bevelSize: 1, //倒角宽度
+            curveSegments: 30,//弧线分段数，使得文字的曲线更加光滑
+            bevelEnabled: true, //布尔值，是否使用倒角，意为在边缘处斜切
+        });
+        gem.center();
+        var mat = new THREE.MeshPhongMaterial({
+            color: 0xffe502,
+            specular: 0x009900,
+            shininess: 30,
+            shading: THREE.FlatShading
+        });
+//        obj.geometry = new THREE.Mesh(gem, mat);
+//        obj.geometry.parameters.text = "change";
+        var textObj = new THREE.Mesh(gem, mat);
+        textObj.position.set( 0, 450, 0 );
+        textObj.castShadow = true;
+        textObj.name = "text";
+        scene.add(textObj);
+
+        obj.geometry.needsUpdate = true;
+        obj.geometry.normalsNeedUpdate = true;
     }
 </script>
 </body>

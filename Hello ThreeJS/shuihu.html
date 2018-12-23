@@ -324,6 +324,9 @@
             window.addEventListener( 'click', onMouseClick, false );
             //自适应
             window.addEventListener( 'resize', onWindowResize, false );
+
+
+
             animate()
         }
         function animate() {
@@ -336,6 +339,10 @@
 
         }
         function render(){
+            var  textureMesh = new THREE.TextureLoader().load('img/xian1.jpg');
+
+            var bump = new THREE.TextureLoader().load("img/xian1.jpg");
+
             try {
 //                scene.remove( mesh );
                 mesh.position.x = 100;
@@ -349,39 +356,37 @@
                  mesh.children[i].material.color.set('brown');
                  }*/
 
-                var  textureMesh = new THREE.TextureLoader().load('img/xian1.jpg');
 
-                var bump = new THREE.TextureLoader().load("img/xian1.jpg");
                 /*mesh.traverse( function ( child ) {
-                    if ( child instanceof THREE.Mesh ) {
-                        //给name为A开头的模型贴图
-//                            if(child.name.indexOf("A")==0){
-//                                child.material.map = texture;
-                        //每个储位单独赋予一个基础材质
-                            child.material = new THREE.MeshPhongMaterial({
-//                                color: 'green',
-//                                map: textureMesh,
-//                                side:THREE.DoubleSide,//两面可见
-//                                emissive :'yellow',
-//                                skinning : true,
-//                                bumpMap  : bump,//凹凸贴图
-                            });//(红色)
+                 if ( child instanceof THREE.Mesh ) {
+                 //给name为A开头的模型贴图
+                 //                            if(child.name.indexOf("A")==0){
+                 //                                child.material.map = texture;
+                 //每个储位单独赋予一个基础材质
+                 child.material = new THREE.MeshPhongMaterial({
+                 //                                color: 'green',
+                 //                                map: textureMesh,
+                 //                                side:THREE.DoubleSide,//两面可见
+                 //                                emissive :'yellow',
+                 //                                skinning : true,
+                 //                                bumpMap  : bump,//凹凸贴图
+                 });//(红色)
 
-                        child.material.needsUpdate = true;
-//                            child.material = new THREE.MeshBasicMaterial({color: 'red' });//(红色)
-//                            child.material = new THREE.MeshDepthMaterial({color: 'red' });//(红色)
-//                            child.material = new THREE.MeshNormalMaterial({color: 'red' });//(红色)
-                    }
-//                    child.material = new THREE.MeshPhongMaterial({color: 'red' });//(红色)
-                } );*/
+                 child.material.needsUpdate = true;
+                 //                            child.material = new THREE.MeshBasicMaterial({color: 'red' });//(红色)
+                 //                            child.material = new THREE.MeshDepthMaterial({color: 'red' });//(红色)
+                 //                            child.material = new THREE.MeshNormalMaterial({color: 'red' });//(红色)
+                 }
+                 //                    child.material = new THREE.MeshPhongMaterial({color: 'red' });//(红色)
+                 } );*/
                 //11 个子类
 
 //                var childArr = [0,1,2,3,4,5];
-                var childArr = [6,7];
+//                var childArr = [6,7];
                 for(var i = 0; i< childArr.length;i++){
                     mesh.children[childArr[i]].material = new THREE.MeshPhongMaterial({
                         color: 'red' ,
-//                    map: textureMesh,
+                        map: textureMesh,
                     });
                 }
             } catch (e) {
@@ -565,6 +570,7 @@
          * */
         // model
         var onProgress = function(xhr) {
+            console.log("skjjhasduhfiasuhfiuasehfiuahsefiuahsefiuh")
             if (xhr.lengthComputable) {
                 var percentComplete = xhr.loaded / xhr.total * 100;
                 var percent = document.getElementById("percent");

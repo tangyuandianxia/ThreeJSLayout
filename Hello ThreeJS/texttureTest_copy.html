@@ -31,7 +31,7 @@
 
         #glFullscreen {
             width: 100%;
-            height: 90vh;
+            height: 94vh;
             min-width: 640px;
             min-height: 360px;
             position: relative;
@@ -164,7 +164,7 @@
         // todo - support pixelRatio in this demo
         renderer.setSize( width, height );
         document.body.appendChild( renderer.domElement );*/
-
+        document.getElementById("glFullscreen").height = window.innerHeight-50;
         renderer = new THREE.WebGLRenderer({//渲染器
             canvas: document.getElementById('example')//画布
             ,
@@ -230,12 +230,35 @@
 
         controls.autoRotate = false;
 
+        /**
+         * 创建天空盒
+         * */
+        var path = "obj/skyboxes/BlueSky/";//设置路径
+        var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];//获取对象
+        var format = ".jpg";//格式
+        //创建盒子，并设置盒子的大小为( 5000, 5000, 5000 )
+        var skyGeometry = new THREE.BoxGeometry( 5000, 5000, 5000 );
+        //设置盒子材质
+        var materialArray = [];
+        for (var i = 0; i < 6; i++)
+            materialArray.push( new THREE.MeshBasicMaterial({
+                // map: THREE.ImageUtils.loadTexture( path + directions[i] + format ),//将图片纹理贴上
+                map: new THREE.TextureLoader().load( path + directions[i] + format ),//将图片纹理贴上
+                side: THREE.BackSide/*镜像翻转，如果设置镜像翻转，那么只会看到黑漆漆的一片，因为你身处在盒子的内部，所以一定要设置镜像翻转。*/
+            }));
+        var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+        var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );//创建一个完整的天空盒，填入几何模型和材质的参数
+        skyBox.name = "sky";
+        scene.add( skyBox );//在场景中加入天空盒
 
         /**
          * 测试新版obj
          * */
         var testPath = "obj/machine/";
-        loadMTLOBJ(testPath,'m',testPath,'m','skjcM1_'+i,0,21,0,0,0,0);
+        // loadMTLOBJ(testPath,'m',testPath,'m','skjcM1_'+i,0,21,0,0,0,0);
+        loadMTLOBJ(testPath,'wall',testPath,'wall','Test_wall',0,21,0,0,0,0);
+
+        var testObj = scene.getObjectByName ('Test_wall');
         /***
          * 加载obj
          * @type {THREE.OBJLoader}
@@ -386,6 +409,8 @@
         if(intersects.length >0){
             //第一个符合条件的物体
             var getObj = intersects[0].object.parent;
+            //如果是天空盒，就不再改变颜色
+            if(intersects[0].object.name == "sky"){return};
             if(getObj instanceof THREE.Group){
                 setInputVal(getObj.position.x,getObj.position.y,getObj.position.z,getObj.name);
             }
@@ -435,6 +460,8 @@
         if(intersects.length >0){
             //第一个符合条件的物体
             var getObj = intersects[0].object.parent;
+            //如果是天空盒，就不再改变颜色
+            if(intersects[0].object.name == "sky"){return};
             if(getObj instanceof THREE.Group){
 //                alert('<div>');
                 setInputVal(getObj.position.x,getObj.position.y,getObj.position.z,getObj.name);
