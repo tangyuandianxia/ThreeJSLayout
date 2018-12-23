@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .div_btn{
+            z-index:200;
+        }
+        .input_style{
+            width: 45px;
+        }
+        /*设置区域的style属性*/
+        .setStyle{
+            /*color:red;*/
+        }
+    </style>
+    <script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<body>
+<!--<div style="height: 45px;width: 230px;z-index:300;border: solid thin red;">
+
+</div>-->
+<div style="height: 45px;z-index:200;">
+    <table>
+        <tr>
+            <td><font id="mtao_name" class="setStyle">机床名:</font>
+                <input type="text" value="" id="matoname" style="width: 150px;z-index:800;">
+            </td>
+
+            <td>
+                <font class="setStyle">X ：</font>
+            </td>
+            <td>
+                <input type="text" value="" id="X" class="input_style" >
+
+            </td>
+            <td>
+                <font class="setStyle">Y ：</font>
+            </td>
+            <td>
+                <input type="text" value="" id="Y"class="input_style" />
+
+            </td>
+            <td>
+                <font class="setStyle">Z ：</font>
+            </td>
+            <td>
+                <input type="text" value="" id="Z" class="input_style" />
+
+            </td>
+            <!--<td>
+                <font class="setStyle">长：</font>
+            </td>
+            <td>
+                <input type="text" id="W" class="input_style" >
+
+            </td>
+            <td>
+                <font class="setStyle">宽：</font>
+            </td>
+            <td>
+                <input type="text" id="L" class="input_style" >
+            </td>
+            <td>
+                <font class="setStyle">高：</font>
+            </td>
+            <td>
+                <input type="text" id="H" class="input_style" >
+            </td>-->
+            <td>
+                <font class="setStyle">旋转角度</font>
+            </td>
+            <td>
+                <input type="text" id="rotation" class="input_style" >
+            </td>
+
+           <!-- <td>
+                <div style="width: 120px;z-index:200;">
+                    <font class="setStyle">应用于所有机床:</font>
+                </div>
+            </td>-->
+            <td>
+                <div style="width: 20px;z-index:200;">
+                    <input type="checkbox" id="checkAll">
+                </div>
+            </td>
+            <td>
+                <button type="button" class="btn btn-default div_btn" onclick="parent.image_change_save()" name="保存修改" >
+                    保存修改
+                </button>
+            </td>
+            <td>
+                <select id="iframe_sel">
+                    <option>shukongjichuang</option>
+                    <option>shukongjichuang2</option>
+                    <option>kaijuanji</option>
+                </select>
+            </td>
+            <td>
+                <button type="button" class="btn btn-default div_btn" onclick="parent.add_machine()" name="添加设备" >
+                    添加设备
+                </button>
+            </td>
+            <td class="div_btn show" style="display: none;">
+                <button type="button" class="btn btn-default div_btn show" onclick="show()" name="显示" >
+                    显示
+                </button>
+            </td>
+            <td class="div_btn hide">
+                <button type="button" class="btn btn-default div_btn hide" onclick="hide()" name="隐藏" >
+                    隐藏
+                </button>
+            </td>
+            <td class="div_btn remove">
+                <button type="button" class="btn btn-default div_btn remove" onclick="parent.removeObj()" name="移除" >
+                    移除
+                </button>
+            </td>
+            <td class="div_btn removeText">
+                <button type="button" class="btn btn-default div_btn removeText" onclick="parent.removeText()" name="移除文字" >
+                    移除文字
+                </button>
+            </td>
+            <td class="div_btn showText">
+                <button type="button" class="btn btn-default div_btn showText" onclick="parent.showText()" name="显示文字" >
+                    显示文字
+                </button>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+<script type="text/javascript">
+    hide();
+    function hide(){
+        $("td").hide();
+        $(".div_btn.show").show();
+//        $(".div_btn.hide").show();
+    }
+    function show(){
+        $("td").show();
+        $(".div_btn.show").hide();
+//        $(".div_btn.hide").hide();
+    }
+</script>
+</body>
+</html>

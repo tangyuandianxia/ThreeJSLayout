@@ -1,0 +1,236 @@
+html,body{
+    height:100%;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.maindt {
+    width: 100%;
+    height: 100%;
+}
+
+td {
+    /*height: 500px;*/
+}
+.left {
+    width: 200px;
+    height: 100%;
+    background-color: #d2d6de;
+    border-right: solid 1px rgba(199, 178, 177, 0.9);
+    vertical-align: top;;
+}
+.mttype {
+    width: 100%;
+    height: 150px;
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+    font-family: Microsoft YaHei;
+    word-break: break-all;
+    white-space:normal;
+
+}
+.mtimgs {
+    width: 100%;
+    height: 140px;
+    line-height: 140px;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+    font-family: Microsoft YaHei;
+}
+.mtip {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    text-align: center;
+    color: #fff;
+    font-family: Microsoft YaHei;
+}
+.mtcode {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+
+    font-family: Microsoft YaHei;
+}
+.mtStatusDuration {
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    font-size: 25px;
+    text-align: center;
+    color: #fff;
+}
+.mtsplit {
+    width: 140px;
+    height: 140px;
+    margin-left:20px;
+    color: #fff;
+}
+.mtstatus {
+    width: 100%;
+    height: 180px;
+    line-height: 180px;
+    font-size: 28px;
+    text-align: center;
+    color: #fff;
+}
+.otherData{
+    width: 94%;
+    margin-left: 3%;
+    height: 180px;
+    border-top: solid 1px red;
+    margin-top: 20px;
+
+}
+.td_center{
+    width: 20px;
+}
+.righttd{
+    vertical-align: top;
+    /*vertical-align: middle;*/
+}
+table{
+    table-layout:fixed;/*td宽度不随着内容改变*/
+    /*border-radius:15px; !*圆角设置属性*!*/
+    word-break: normal;
+    white-space:nowrap;/*文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
+}
+th{
+    border: solid thin rgb(210, 214, 222) !important;
+    border-top: none !important;
+    /*background-color: linear-gradient(#0f0f0f, #337ab7);*/
+    /*background: linear-gradient(#0f0f0f, #3c3c3c,#0f0f0f);*/
+    background: #096BC3;
+    color: white;
+    font-size: 8px;
+    font-weight:100;
+    height: 25px;
+    text-align: center;
+}
+.thstyle{
+    text-align: center;
+    word-break: normal;
+    white-space:nowrap;/*文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
+}
+.tdstyle{
+    border: solid thin rgb(210, 214, 222) !important;
+    text-align: center;
+    height: 50px;
+    overflow:hidden;
+    /*white-space:nowrap;*/
+    /*word-wrap:break-word;!*自动换行*!*/
+    word-break: normal;
+    white-space:nowrap;/*文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
+}
+.tdstyle_run_color{
+    border: solid thin rgb(210, 214, 222) !important;
+    text-align: center;
+    height: 50px;
+    overflow:hidden;
+    /*word-wrap:break-word;!*自动换行*!*/
+    word-break: normal;
+    white-space:nowrap;/*文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
+    /*background-color: #009900;*/
+    /*color:white;*/
+}
+.tdstyle_idle_color{
+    border: solid thin rgb(210, 214, 222) !important;
+    text-align: center;
+    height: 50px;
+    overflow:hidden;
+    /*word-wrap:break-word;!*自动换行*!*/
+    word-break: normal;
+    white-space:nowrap;/*文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
+    /*background-color: #f39c12;*/
+    /*color:white;*/
+}
+.tdstyle_alarm_color{
+    border: solid thin rgb(210, 214, 222) !important;
+    text-align: center;
+    height: 50px;
+    overflow:hidden;
+    /*word-wrap:break-word;!*自动换行*!*/
+    word-break: normal;
+    white-space:nowrap;/*文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
+    /*background-color: #ee1414;*/
+    /*color:white;*/
+}
+.tdstyle_poweroff_color{
+    border: solid thin rgb(210, 214, 222) !important;
+    text-align: center;
+    height: 50px;
+    overflow:hidden;
+    /*word-wrap:break-word;!*自动换行*!*/
+    word-break: normal;
+    white-space:nowrap;/*文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
+    background-color: #d2d6de;
+    color:white;
+}
+.pd_top {
+    margin-top: 4px;
+}
+.pr_top{
+    margin-top: 30px;
+}
+.pieHeight{
+    height:200px;
+}
+.text_align{
+    text-align: center;
+}
+.text_align_right{
+    text-align: right;
+    padding-top:20px;
+}
+#tb_departments {
+    table-layout:auto;/*恢复table-layout默认设置*/
+    word-break: normal;
+    white-space:nowrap;/*文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止*/
+}
+/*模拟信号显示*/
+*{margin: 0; padding: 0; list-style: none;}
+.self.box{width: 50px; height: 30px; margin: 5px auto;}
+.self.box ul{position: relative; width: 50px; height: 30px;list-style:none !important;}
+.self.box li{width: 5px; position: absolute; bottom: 0; border-radius: 10px; background: rgba(0,0,0,0.5);list-style:none !important;}
+.self.box ul li:nth-child(1){height: 10px; left: 0px;list-style:none !important;}
+.self.box ul li:nth-child(2){height: 15px; left: 10px;list-style:none !important;}
+.self.box ul li:nth-child(3){height: 20px; left: 20px;list-style:none !important;}
+.self.box ul li:nth-child(4){height: 25px; left: 30px;list-style:none !important;}
+.self.box ul li:nth-child(5){height: 30px; left: 40px;list-style:none !important;}
+
+.att_f_bg_color{
+    background-color: #00a65a !important;
+}
+.att_f_bg_color_red{
+    background-color: red !important;
+    /*width:100%;*/
+}
+.att_f_bg_color_green{
+    background-color: green !important;
+}
+.att_f_bg_color_yellow{
+    background-color: yellow !important;
+}
+.s_f_p{
+    padding: 0px;
+}
+.f_border{
+    border: solid 1px rgb(210, 214, 222) !important;
+    border-radius: 3px;
+}
+.b_t{border-top: solid 2px rgb(210, 214, 222) !important;border-radius: 3px;}
+.b_r{border-right: solid 2px rgb(210, 214, 222) !important;border-radius: 3px;}
+.b_b{border-bottom: solid 2px rgb(210, 214, 222) !important;border-radius: 3px;}
+.b_l{border-left: solid 2px rgb(210, 214, 222) !important;border-radius: 3px;}

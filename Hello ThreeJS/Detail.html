@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设备详细信息</title>
+
+    <script type="text/javascript">
+
+    </script>
+    <style type="text/css">
+        .fanuc{
+            display: none;
+        }
+        .mazak{
+            display: none;
+        }
+    </style>
+    <style>
+    </style>
+    <link rel="stylesheet" href="bower_components/Font-Awesome-3.2.1/css/font-awesome.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <script src="bower_components/dist/js/echarts.min.js"></script>
+    <script src="bower_components/dist/js/url-utils.js"></script>
+    <link rel="stylesheet" href="Detail.css">
+
+    <!--<link rel="stylesheet" href="../../dist/js/bootstrap-table.css">
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../bower_components/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="../../bower_components/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>-->
+</head>
+<body>
+<table cellpadding="0" cellspacing="0" class="maindt">
+    <tr>
+        <td class="left">
+            <div class="mttype">
+                <!--FANUC-->
+            </div>
+            <div class="mtimgs">
+                <img src="bower_components/dist/img/laserPoweroff.png" width="180px" height="140px">
+            </div>
+            <div class="mtip">
+                <span>
+                    <!--192.168.123.222-->
+                </span>
+            </div>
+            <div class="mtcode">
+                <span>
+                    <!--F3_JGZX-0078-->
+                </span>
+            </div>
+            <div class="mtStatusDuration">
+                <i class="icon-time"></i>   <span>00:00:00</span>
+            </div>
+            <div class="mtsplit">
+
+            </div>
+            <div class="mtstatus">
+
+                <i class="icon-off"></i>   <span>关机</span>
+            </div>
+        </td>
+        <td class="td_center"></td>
+        <td class="righttd">
+            <!--机床详细信息 修改后-->
+            <div class="row" style="width: 100%;font-weight: bold">
+                <div class="col-md-12 col-sm-12 col-xs-12 pd_top"><h4>机床详细信息</h4></div>
+                <div class="col-md-12">
+                    <div class="col-md-1 mato_name">设备名称:</div>
+                    <div class="col-md-2 mato_name_val" ></div>
+                    <div class="col-md-1 mode">操作模式:</div>
+                    <div class="col-md-2 mode_val" ></div>
+                    <div class="col-md-1 estop">急停:</div>
+                    <div class="col-md-2 estop_val" ></div>
+                    <!--<div class="col-md-1 chanalarm">通道报警:</div>
+                    <div class="col-md-2 chanalarm_val" ></div>-->
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-1 program_header">程序头:</div>
+                    <div class="col-md-2 program_header_val" ></div>
+                    <div class="col-md-1 execution">程序状态:</div>
+                    <div class="col-md-2 execution_val" ></div>
+                    <!--<div class="col-md-1 programcommon">程序注释:</div>
+                    <div class="col-md-2 programcommon_val" ></div>-->
+                   <div class="col-md-1 alarm">报警:</div>
+                 <div class="col-md-2 alarm_val" ></div>
+                </div>
+                <div class="col-md-12">
+                    <!--<div class="col-md-1 block">当前行内容:</div>-->
+                    <!--<div class="col-md-2 block_val" ></div>-->
+                    <div class="col-md-1 tool_id">刀具ID:</div>
+                    <div class="col-md-2 tool_id_val" ></div>
+                    <div class="col-md-1 toolno">当前刀号:</div>
+                    <div class="col-md-2 toolno_val" ></div>
+                    <!--<div class="col-md-1 longo_cut_times">切削时长:</div>
+                    <div class="col-md-2 longo_cut_times_val" ></div>-->
+                    <div class="col-md-1 program">程序名:</div>
+                    <div class="col-md-2 program_val" ></div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-1 line">当前行号:</div>
+                    <div class="col-md-2 line_val" ></div>
+                    <!--<div class="col-md-1 block">当前行内容:</div>
+                    <div class="col-md-2 block_val" ></div>-->
+                    <div class="col-md-1 s1speed">主轴转速:</div>
+                    <div class="col-md-2 s1speed_val" ></div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-1 block">当前行内容:</div>
+                    <div class="col-md-5 block_val" ></div>
+                    <div class="col-md-1 programcommon">程序注释:</div>
+                    <div class="col-md-5 programcommon_val" ></div>
+                </div>
+                <!--济南桥箱定制 mazak刀具寿命-->
+                <div class="col-md-12 mazak">
+                    <div class="col-md-1 mazak_cut">刀具使用情况:</div>
+                    <div class="col-md-5 mazak_cut_val" ></div>
+                </div>
+                <!--济南桥箱定制 mazak刀具寿命 end-->
+                <!--济南桥箱定制 FANUC刀具寿命 刀补-->
+                <div class="col-md-12 fanuc">
+                    <div class="col-md-1 toollife">刀具寿命:</div>
+                    <div class="col-md-5 toollife_val" ></div>
+                    <div class="col-md-1 marco_h601">孔实测值:</div>
+                    <div class="col-md-5 marco_h601_val" ></div>
+                </div>
+                <div class="col-md-12 fanuc">
+                    <div class="col-md-1 marco_h623">加工后端面实测值:</div>
+                    <div class="col-md-2 marco_h623_val" ></div>
+                    <div class="col-md-1 marco_h605">X轴刀补:</div>
+                    <div class="col-md-2 marco_h605_val" ></div>
+                    <div class="col-md-1 marco_h682">Z加工前刀补:</div>
+                    <div class="col-md-2 marco_h682_val" ></div>
+                    <div class="col-md-1 marco_h625">Z加工后刀补:</div>
+                    <div class="col-md-2 marco_h625_val" ></div>
+                </div>
+                <div class="col-md-12 fanuc">
+
+                </div>
+                <!--济南桥箱定制 FANUC刀具寿命 刀补 end-->
+                <div class="col-md-12">
+
+                </div>
+                <div class="col-md-6 text_aligns grid_names" style="padding: 0px;">
+                    <div class="col-md-12 text_align ">
+                        <div class="col-md-2 text_align H_H b_t b_l"></div>
+                        <div class="col-md-2 H_X b_t">X</div>
+                        <div class="col-md-2 H_Y b_t">Y</div>
+                        <div class="col-md-2 H_Z b_t">Z</div>
+                        <div class="col-md-2 H_C b_t">C</div>
+                        <div class="col-md-2 H_B b_t b_r b_r">B</div>
+                    </div>
+                    <div class="col-md-12 text_align">
+                        <div class="col-md-2 ABS grid_abs b_l" >绝对坐标:</div>
+                        <div class="col-md-2 ABS_X"></div>
+                        <div class="col-md-2 ABS_Y "></div>
+                        <div class="col-md-2 ABS_Z"></div>
+                        <div class="col-md-2 ABS_C"></div>
+                        <div class="col-md-2 ABS_B b_r"></div>
+                    </div>
+                    <div class="col-md-12 text_align">
+                        <div class="col-md-2 REL f_border b_l">相对坐标:</div>
+                        <div class="col-md-2 REL_X"></div>
+                        <div class="col-md-2 REL_Y"></div>
+                        <div class="col-md-2 REL_Z"></div>
+                        <div class="col-md-2 REL_C"></div>
+                        <div class="col-md-2 REL_B b_r"></div>
+                    </div>
+                    <div class="col-md-12 text_align">
+                        <div class="col-md-2 MACH f_border b_l">机械坐标:</div>
+                        <div class="col-md-2 MACH_X"></div>
+                        <div class="col-md-2 MACH_Y"></div>
+                        <div class="col-md-2 MACH_Z"></div>
+                        <div class="col-md-2 MACH_C"></div>
+                        <div class="col-md-2 MACH_B b_r"></div>
+                    </div>
+                    <div class="col-md-12 text_align">
+                        <div class="col-md-2 DIST f_border b_l b_b">剩余偏移量:</div>
+                        <div class="col-md-2 DIST_X b_b"></div>
+                        <div class="col-md-2 DIST_Y b_b"></div>
+                        <div class="col-md-2 DIST_Z b_b"></div>
+                        <div class="col-md-2 DIST_C b_b"></div>
+                        <div class="col-md-2 DIST_B b_b b_r"></div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="padding:0px;">
+                    <div class="col-md-2 text_align F_head f_border" >F</div>
+                    <div class="col-md-10" style="padding:0px;">
+                        <div class="col-md-12 text_align feed_commanded_total ">
+                            <div class="col-md-6 feed_commanded f_border" >F设定值:</div>
+                            <div class="col-md-6 feed_commanded_val f_border"></div>
+                        </div>
+                        <div class="col-md-12 text_align feed_ovr_total">
+                            <div class="col-md-6 feed_ovr f_border" >F倍率:</div>
+                            <div class="col-md-6 feed_ovr_val f_border" ></div>
+                        </div>
+                        <div class="col-md-12 text_align path_feedrate_total">
+                            <div class="col-md-6 path_feedrate f_border">实际进给:</div>
+                            <div class="col-md-6 path_feedrate_val f_border"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="padding:0px;">
+                    <div class="col-md-2 text_align S_head f_border">S</div>
+                    <div class="col-md-10" style="padding:0px;">
+                        <div class="col-md-12 text_align svalue_cmd_total ">
+                            <div class="col-md-6 svalue_cmd f_border" >S设定值:</div>
+                            <div class="col-md-6 svalue_cmd_val f_border"></div>
+                        </div>
+                        <div class="col-md-12 text_align sspeedovr_total">
+                            <div class="col-md-6 sspeedovr f_border" >S倍率:</div>
+                            <div class="col-md-6 sspeedovr_val f_border" ></div>
+                        </div>
+                        <div class="col-md-12 text_align s1load_total">
+                            <div class="col-md-6 s1load f_border">主轴负载:</div>
+                            <div class="col-md-6 s1load_val f_border"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--</div>-->
+            <div class="row" style="width: 100%;">
+                <!--<div class="col-md-12 col-sm-12 col-xs-12 pd_top"><h4>机床详细信息</h4></div>-->
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <table id="tb_departments" ></table>
+                    <!--<table width="100%" style="height: 20px;">
+                        <thead>
+                        <tr>
+                            <th class="thstyle">操作模式</th>
+                            <th class="thstyle">程序执行状态</th>
+                            <th class="thstyle">刀号</th>
+                            <th class="thstyle">程序号</th>
+                            <th class="thstyle">当前行</th>
+                            &lt;!&ndash;<th class="thstyle">报警号</th>&ndash;&gt;
+                            <th class="thstyle">进给</th>
+                            <th class="thstyle">倍率</th>
+                            <th class="thstyle">机械坐标</th>
+                            <th class="thstyle">绝对坐标</th>
+                            <th class="thstyle">相对坐标</th>
+                            <th class="thstyle">剩余坐标</th>
+                            <th class="thstyle">主轴功率</th>
+                        </tr>
+                        </thead>
+                        <tbody id="attribute_tbody_id"></tbody>
+                    </table>-->
+                </div>
+            </div>
+            <!--运行空闲等表格-->
+            <div class="row" style="width: 100%;">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <h4>过去24小时的效率每小时状态时长 以及 求和</h4>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12"><h5>运行 (过去24小时 单位：%)</h5></div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <table cellpadding="0" cellspacing="0" style="width: 100%;" align="center">
+                        <thead id="run_thead_id"></thead>
+                        <tbody id="run_tbody_id">
+                        <!--后台动态接入数据-->
+                        </tbody>
+                    </table>
+                    <table id="ArbetTable"></table>
+                </div>
+                <!--空闲-->
+                <div class="col-md-12 col-sm-12 col-xs-12"><h5>空闲 (过去24小时 单位：%)</h5></div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <table cellpadding="0" cellspacing="0" style="width: 100%;" align="center">
+                        <thead id="idle_thead_id"></thead>
+                        <tbody id="idle_tbody_id">
+                        <!--后台动态接入数据-->
+                        </tbody>
+                    </table>
+                </div>
+                <!--报警-->
+                <div class="col-md-12 col-sm-12 col-xs-12"><h5>报警 (过去24小时 单位：%)</h5></div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <table cellpadding="0" cellspacing="0" style="width: 100%;" align="center">
+                        <thead id="alarm_thead_id"></thead>
+                        <tbody id="alarm_tbody_id">
+                        <!--后台动态接入数据-->
+                        </tbody>
+                    </table>
+                </div>
+                <!--进度条-->
+                <div class="col-md-12 col-sm-12 col-xs-12 pd_top">
+                    <div class="col-md-6 col-sm-6 col-xs-6 pr_top">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                运行
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2" id="run_pro_text_id">
+                                0.0%
+                            </div>
+                            <div  class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="col-md-12 col-sm-12 col-xs-12" id="progress_run">
+                                    我是进度条
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2" id="run_pro_time_id">
+                                00:00:00
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                空闲
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2" id="idle_pro_text_id">
+                                0.0%
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div  class="col-md-12 col-sm-12 col-xs-12" id="progress_idle">
+                                    我是进度条progress_idle
+                                </div>
+                            </div>
+                            <div  class="col-md-2 col-sm-2 col-xs-2" id="idle_pro_time_id">
+                                00:00:00
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                报警
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2" id="alarm_pro_text_id">
+                                0.0%
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="col-md-12 col-sm-12 col-xs-12" id="progress_alarm">
+                                    我是进度条progress_alarm
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2" id="alarm_pro_time_id">
+                                00:00:00
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 pieHeight">
+                        <!--<div id="pieChart" style="width: 100%;height: 450px"></div>-->
+                        <div id="pieChart" style="width: 100%;height: 100%;"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row" style="width: 100%;" >
+                <!--<div class="col-md-1">我是进度条</div>-->
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-4 col-sm-12 col-xs-12 text_align">
+                        <div  class="col-md-12 col-sm-12 col-xs-12 text_align">
+                            设备运行效率
+                        </div>
+                        <div  class="col-md-6 col-sm-12 col-xs-12 text_align_right" id="run_rate_eff"></div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 text_align run_rate_eff_ul self box">
+                            <ul>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 text_align">
+                        <div  class="col-md-12 col-sm-12 col-xs-12 text_align">
+                            设备利用率
+                        </div>
+                        <div  class="col-md-6 col-sm-12 col-xs-12 text_align_right" id="total_utilize_rate_eff"></div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 text_align total_utilize_rate_eff_ul self box">
+                            <ul>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-12 col-xs-12 text_align">
+                        <div  class="col-md-12 col-sm-12 col-xs-12 text_align">
+                            设备报警率
+                        </div>
+                        <div  class="col-md-6 col-sm-12 col-xs-12 text_align_right" id="fault_rate_eff"></div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 text_align fault_rate_eff_ul self box">
+                            <ul>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </td>
+    </tr>
+</table>
+
+<script src="Detail.js"></script>
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
