@@ -58,6 +58,7 @@
         }
     </style>
     <script src="../three.js-master/examples/js/libs/dat.gui.min.js"></script>
+
 </head>
 <body>
 <!--<script type="text/javascript" src="../learning-threejs-master/libs/three.js"></script>
@@ -95,7 +96,8 @@
 <script type="text/javascript" src="../three.js-master/examples/js/shaders/SepiaShader.js"></script>
 <script type="text/javascript" src="../three.js-master/examples/js/postprocessing/SavePass.js"></script>
 <script type="text/javascript" src="../three.js-master/examples/js/postprocessing/TexturePass.js"></script>-->
-
+<script src="../learning-threejs-master/libs/ThreeBSP.js"></script>
+<script src=" threebsp.js"></script>
 
 <!--<script type="text/javascript" src="jquery.min.js"></script>-->
 <iframe src="iframe.html" id="iframe" scrolling="no" frameborder="0" width="100%" height="45px" ></iframe>
@@ -149,6 +151,8 @@
     var isRemoveTextGroup = [];
     //双击事件是否打开新页面
     var onMouseDBClickFlag = true;
+    //点击事件忽略的目标
+    var clickIgnore = ["sky","north","south","east","west"];
     init();
 //    animate();
     function init() {
@@ -197,7 +201,7 @@
 
         camera = new THREE.PerspectiveCamera( 30, 1, 0.1, 100000 );//透视摄影机
 //        camera.position.set(1300.0, 600.0, 1200.0);//相机位置
-        camera.position.set(1200.0, 240.0, 600.0);//相机位置
+        camera.position.set(1000.0, 240.0, 600.0);//相机位置
         camera.aspect = width / height;
 //            camera.position.set(-0.0, 0.0, 0.0);//相机位置
 //            camera.lookAt(new THREE.Vector3(0, 0, 0));//lookAt()设置相机所看的位置
@@ -273,7 +277,7 @@
 
         // var path = 'obj/skjc/';
         var path = "obj/machine/skjc/";
-        for(var i=0;i<=6;i++){
+        for(var i=0;i<=1;i++){
             if(i==0){
                 loadMTLOBJ(path,'shukongjichuang',path,'shukongjichuang','skjcT1_'+i,0,21,0,0,0,0);
                 loadMTLOBJ(path,'shukongjichuang2',path,'shukongjichuang2','skjcT2_'+i,0,21,140,0,0*Math.PI,0);
@@ -299,20 +303,35 @@
         var wall_h_move = wall_h/2-5;//围墙高度便宜
         var wall_h_horizontall_move = wall_vertical_l/2;
         var wall_h_vertical_move = wall_horizontal_l/2;
-        var wall_vertical_w = 800;
-        var wall_horizontal_h = 800;
-        var wall_vertical_h = 800;
 //        createCube(img,name, l,w,h, x,y,z,  translateX,translateY,translateZ, rotationX,rotationY,rotationZ)
         createCube('images/wall.png',"north",wall_horizontal_l,wall_h/2,10, 0,wall_h_move/2,wall_h_horizontall_move, 0,0,0, 0,0,0);
-        createCube('images/wall.png',"south",wall_horizontal_l,wall_h,10, 0,wall_h_move,-wall_h_horizontall_move, 0,0,0, 0,0,0);
+        createCube('images/wall.png',"south",wall_horizontal_l,wall_h,10, 0,wall_h_move,-wall_h_horizontall_move, 0,0,0, 0,0,0 ,5);
 //        createCube('images/wall.png',"south",600,100,10, 0,50,300, 0,0,0, 0,0,0);
         createCube('images/wall.png',"west", wall_vertical_l,wall_h,10, wall_h_vertical_move,wall_h_move,0, 0,0,0, 0,0.5,0);
-        createCube('images/wall.png',"east", wall_vertical_l,wall_h,10, -wall_h_vertical_move,wall_h_move,0, 0,0,0, 0,0.5,0);
+        createCube('images/wall.png',"east", wall_vertical_l,wall_h,10, -wall_h_vertical_move,wall_h_move,0, 0,0,0, 0,0.5,0 ,5 );
+
+        /**
+         * 创建窗户
+         * */
+        var mesh_bsp = createBSPCube('images/chuang.jpg',"west1", wall_vertical_l,wall_h,30, 0,100,0, 0,0,0, 0,0,0);
+        var mesh_bsp2 = createBSPCube('images/wall.png',"west2", wall_vertical_l,wall_h,30, 0,100,0, 0,0,0, 0,0.5,0);
+        var sphere1BSP = new ThreeBSP(mesh_bsp);
+        var cube2BSP = new ThreeBSP(mesh_bsp2);
+        var resultBSP = sphere1BSP.subtract(cube2BSP);//求差集
+        var result = resultBSP.toMesh();
+        /*result.material.shading = THREE.FlatShading;
+        result.geometry.computeFaceNormals();
+        result.geometry.computeVertexNormals();
+        result.material.needsUpdate = true;
+        result.geometry.buffersNeedUpdate = true;
+        result.geometry.uvsNeedUpdate = true;*/
+        scene.add(result);
 
 
         // createPlane(w,h,img,translateX,translateY,translateZ,RX,RY,RZ)
         // createPlane(1200,600,'images/caodi.jpg',0,0,5);
         createPlaneRepeat(1600,800,'images/floor.png',0,0,3);
+        createPlaneRepeat(1800,900,'images/caodi.jpg',0,0,5);
 
 //        createPlane(600,600,'images/tree.png',0,0,25,0.5,0.5,0.5);
         /**
@@ -339,7 +358,6 @@
             createPlane(80,80,'images/xian1.jpg',82*i,-140,0);
             createPlane(80,80,'images/xian1.jpg',-82*i,-140,0);
         }
-
 
 
         //捕获模型
@@ -415,6 +433,11 @@
             var getObj = intersects[0].object.parent;
             //如果是天空盒，就不再改变颜色
             if(intersects[0].object.name == "sky"){return};
+            //遍历clickIgnore数组，点击事件忽略数组中的对象
+            for(var i=0;i<clickIgnore.length;i++){
+                if(intersects[0].object.name == clickIgnore[i].toString()){return};
+            }
+
             if(getObj instanceof THREE.Group){
                 setInputVal(getObj.position.x,getObj.position.y,getObj.position.z,getObj.name);
             }
@@ -466,6 +489,10 @@
             var getObj = intersects[0].object.parent;
             //如果是天空盒，就不再改变颜色
             if(intersects[0].object.name == "sky"){return};
+            //遍历clickIgnore数组，点击事件忽略数组中的对象
+            for(var i=0;i<clickIgnore.length;i++){
+                if(intersects[0].object.name == clickIgnore[i].toString()){return};
+            }
             if(getObj instanceof THREE.Group){
 //                alert('<div>');
                 setInputVal(getObj.position.x,getObj.position.y,getObj.position.z,getObj.name);
@@ -658,13 +685,13 @@
     /**
      * 创建矩形
      * */
-    function createCube(img,name,l,w,h,x,y,z,translateX,translateY,translateZ,rotationX,rotationY,rotationZ){
+    function createCube(img,name,l,w,h,x,y,z,translateX,translateY,translateZ,rotationX,rotationY,rotationZ,index){
 //        var img = 'images/wall.png';
-        var  texture = new THREE.TextureLoader().load(img);
+        var texture = new THREE.TextureLoader().load(img);
         texture.wrapS = THREE.MirroredRepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
-        var wrapS = l/128 *4;
-        var wrapT = w/128 *4;
+        var wrapS = l/128*2;
+        var wrapT = w/128*2;
         console.log(wrapS+"  "+wrapT);
         texture.repeat.set( wrapS, wrapT );
 //        texture.repeat.set( THREE.RepeatWrapping, THREE.RepeatWrapping );
@@ -681,7 +708,7 @@
                     transparent:false,
                 }) //材質設定
         );*/
-        var mesh = new THREE.Mesh(geometry,material);
+//        var mesh = new THREE.Mesh(geometry,material);
         /**
          * 六面贴图
          * */
@@ -694,6 +721,25 @@
         var materials = [material1, material2, material3, material4, material5, material6];
         var mesh = new THREE.Mesh(geometry,materials);*/
 
+        var mat1 = new THREE.TextureLoader().load("images/white.png");
+        var mat2 = new THREE.TextureLoader().load("images/column.jpg");
+        var mat3 = new THREE.TextureLoader().load(img);
+        var matArray = [];
+        matArray.push(new THREE.MeshBasicMaterial({map:mat1}));//左
+        matArray.push(new THREE.MeshBasicMaterial({map:mat1}));//右
+        matArray.push(new THREE.MeshBasicMaterial({map:mat1}));//上
+        matArray.push(new THREE.MeshBasicMaterial({map:mat1}));//下
+        matArray.push(new THREE.MeshBasicMaterial({map:mat2}));//前
+        matArray.push(new THREE.MeshBasicMaterial({map:mat2}));//后
+
+        //根据传入的下标，修改贴图
+        if(index == null || index == "" || typeof index == "undefined"){
+            matArray[4] = new THREE.MeshBasicMaterial({map:texture,color:'#ABB6BC'});//
+        }else{
+            matArray[Number(index)] = new THREE.MeshBasicMaterial({map:texture,color:'#ABB6BC'});//
+        }
+        var mesh = new THREE.Mesh(geometry,matArray);
+
         scene.add(mesh);
 //        mesh.position.set(0, 0, -300);
 //        mesh.translateY(21);
@@ -704,9 +750,82 @@
         mesh.rotation.set(Number(rotationX)*Math.PI,Number(rotationY)*Math.PI,Number(rotationZ)*Math.PI);
         mesh.name = name;
 
+        mesh.material=matArray;
         //清理threejs 缓存
         clearThreeCache();
     }
+
+    /**
+     * 创建用于BSP做切割的立方体
+     * 一般用于拼接MESH
+     * */
+    function createBSPCube(img,name,l,w,h,x,y,z,translateX,translateY,translateZ,rotationX,rotationY,rotationZ){
+        var  texture = new THREE.TextureLoader().load(img);
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        var wrapS = l/128 *4;
+        var wrapT = w/128 *4;
+        texture.repeat.set( wrapS, wrapT );
+//        texture.repeat.set( THREE.RepeatWrapping, THREE.RepeatWrapping );
+//        var geometry = new THREE.CubeGeometry(600, 50, 10);
+        var geometry = new THREE.CubeGeometry(l, w, h);
+        var material  = new THREE.MeshBasicMaterial({map:texture,transparent:false});
+//        material.side=THREE.DoubleSide;//单面贴就删除
+        //      side：THREE.FrontSide 正面，THREE.BackSide 反面，THREE.DoubleSide 双面
+        material.side=THREE.FrontSide;
+        /*var cube = new THREE.Mesh(new THREE.CubeGeometry(600, 50, 10), //形状設定
+         new THREE.MeshLambertMaterial({
+         //                    color : 0xff0000,
+         map:texture,
+         transparent:false,
+         }) //材質設定
+         );*/
+        var mesh = new THREE.Mesh(geometry,material);
+        /**
+         * 六面贴图
+         * */
+        /*var material1 =new THREE.MeshPhongMaterial( { map:texture } );
+         var material2 = new THREE.MeshPhongMaterial( { map:texture } );
+         var material3 = new THREE.MeshPhongMaterial( { map:texture } );
+         var material4 = new THREE.MeshPhongMaterial( { map:texture } );
+         var material5 = new THREE.MeshPhongMaterial( { map:texture } );
+         var material6 = new THREE.MeshPhongMaterial( { map:texture } );
+         var materials = [material1, material2, material3, material4, material5, material6];
+         var mesh = new THREE.Mesh(geometry,materials);*/
+
+//        scene.add(mesh);
+//        mesh.position.set(0, 0, -300);
+        mesh.position.set(x, y, z);
+        mesh.translateX(translateX);
+        mesh.translateY(translateY);
+        mesh.translateZ(translateZ);
+        mesh.rotation.set(Number(rotationX)*Math.PI,Number(rotationY)*Math.PI,Number(rotationZ)*Math.PI);
+        mesh.name = name;
+        return mesh;
+    }
+    //生成模型
+    function createMesh(geom) {
+
+        //设置当前的模型矩阵沿xy轴偏移，让图片处于显示中心
+        //geom.applyMatrix(new THREE.Matrix4().makeTranslation(-250, -100, 0));
+
+        // 创建法向量纹理
+        var meshMaterial = new THREE.MeshNormalMaterial({
+            flatShading: THREE.FlatShading,
+            transparent: true,
+            opacity: 0.9
+        });
+
+        //  创建一个线框纹理
+        var wireFrameMat = new THREE.MeshBasicMaterial({opacity: 0.5, wireframeLinewidth: 0.5});
+        wireFrameMat.wireframe = true;
+
+        // 创建模型
+        var mesh = new THREE.Mesh(geom, wireFrameMat);
+
+        return mesh;
+    }
+
 
     function getJson(){
         countNum ++ ;
